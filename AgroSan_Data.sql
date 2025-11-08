@@ -19,6 +19,11 @@ INSERT INTO ESTADO_PARCELA (descripcion) VALUES
 ('En descanso / Sin cultivo'),
 ('Inutilizable / Terreno dañado');
 
+INSERT INTO ESTADO_ACTIVIDAD (descripcion) VALUES
+('Pendiente'),
+('En curso'),
+('Finalizada');
+
 -- ===========================
 -- 2. Insertar datos en PARCELA
 -- ===========================
@@ -111,10 +116,10 @@ INSERT INTO INSUMO (nombre, descripcion, unidad_medida, stock_actual, stock_mini
 -- ===========================
 -- 11. Insertar datos en ACTIVIDAD_PROGRAMADA
 -- ===========================
-INSERT INTO ACTIVIDAD_PROGRAMADA (id_actividad, id_parcela, id_empleado, fecha_programada) VALUES
-(1, 1, 1, '2025-09-05'),
-(2, 2, 2, '2025-09-20'),
-(3, 1, 1, '2025-10-15');
+INSERT INTO ACTIVIDAD_PROGRAMADA (id_actividad, id_parcela, id_empleado, fecha_programada, id_estado_actividad) VALUES
+(1, 1, 1, '2025-09-05', 3),
+(2, 2, 2, '2025-09-20', 3),
+(3, 1, 1, '2025-10-15', 3);
 
 -- ===========================
 -- 12. Insertar datos en USO_INSUMO

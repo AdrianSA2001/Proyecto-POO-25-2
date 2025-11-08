@@ -29,6 +29,11 @@ CREATE TABLE ESTADO_PARCELA (
     descripcion NVARCHAR(50) NOT NULL
 );
 
+CREATE TABLE ESTADO_ACTIVIDAD (
+    id_estado_actividad INT IDENTITY(1,1) PRIMARY KEY,
+    descripcion NVARCHAR(50) NOT NULL
+);
+
 -- ===========================
 -- 2. Tabla PARCELA
 -- ===========================
@@ -69,9 +74,11 @@ CREATE TABLE ACTIVIDAD_PROGRAMADA (
     id_parcela INT NOT NULL,
     id_empleado INT NOT NULL,
     fecha_programada DATE NOT NULL,
+    id_estado_actividad INT NOT NULL,
     FOREIGN KEY (id_actividad) REFERENCES ACTIVIDAD(id_actividad),
     FOREIGN KEY (id_parcela) REFERENCES PARCELA(id_parcela),
-    FOREIGN KEY (id_empleado) REFERENCES EMPLEADO(id_empleado)
+    FOREIGN KEY (id_empleado) REFERENCES EMPLEADO(id_empleado),
+    FOREIGN KEY (id_estado_actividad) REFERENCES ESTADO_ACTIVIDAD(id_estado_actividad)
 );
 
 -- ===========================
