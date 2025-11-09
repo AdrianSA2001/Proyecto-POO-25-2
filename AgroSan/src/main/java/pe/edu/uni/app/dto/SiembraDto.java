@@ -16,4 +16,13 @@ public class SiembraDto{
 	
 	@JsonProperty("id_estado_empleado")
 	int id_estado_empleado;
+	
+	@JsonProperty("id_actividad")
+	int id_actividad;
+	
+	@JsonProperty("id_estado_actvidad")
+	int id_estado_actividad;
+	
+	@JsonProperty("id_tipo_cultivo")
+	int id_tipo_cultivo;
 }
