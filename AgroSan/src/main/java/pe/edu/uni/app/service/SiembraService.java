@@ -13,7 +13,7 @@ public class SiembraService{
 	@Autowired
 	JdbcTemplate jdbctemplate;
 	@Transactional(propagation = Propagation.MANDATORY)
-	public void validarParcela(int id_parcela) {
+	public void validarParcela(int id_parcela){
 		String sql = """
 				SELECT COUNT(id_parcela) FROM PARCELA WHERE id_parcela = ?
 				""";
@@ -23,7 +23,7 @@ public class SiembraService{
 		}
 	}
 	@Transactional(propagation = Propagation.MANDATORY)
-	public void validarParcelaActiva(int id_parcela) {
+	public void validarParcelaActiva(int id_parcela){
 		String sql = """
 				SELECT id_estado_parcela FROM PARCELA WHERE id_parcela = ?
 				""";

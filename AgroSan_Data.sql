@@ -27,12 +27,12 @@ INSERT INTO ESTADO_ACTIVIDAD (descripcion) VALUES
 -- ===========================
 -- 2. Insertar datos en PARCELA
 -- ===========================
-INSERT INTO PARCELA (area, id_estado_parcela) VALUES
-(100.0, 3),
-(100.0, 3),
-(120.0, 3),
-(120.0, 3),
-(150.0, 3);
+INSERT INTO PARCELA (nombre, area, id_estado_parcela) VALUES
+('Zona A', 100.0, 3),
+('Zona B', 100.0, 3),
+('Zona A', 120.0, 3),
+('Zona C', 120.0, 3),
+('Zona D', 150.0, 3);
 
 -- ===========================
 -- 3. Insertar datos en EMPLEADO

@@ -39,6 +39,7 @@ CREATE TABLE ESTADO_ACTIVIDAD (
 -- ===========================
 CREATE TABLE PARCELA (
     id_parcela INT IDENTITY(1,1) PRIMARY KEY,
+    ubicacion NVARCHAR(50) NOT NULL,
     area DECIMAL(10,2) NOT NULL,
     id_estado_parcela INT NOT NULL,
     FOREIGN KEY (id_estado_parcela) REFERENCES ESTADO_PARCELA(id_estado_parcela)
