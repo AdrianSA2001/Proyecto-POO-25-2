@@ -21,7 +21,7 @@ public class ParcelaService{
 		if (area < 0.0){
 			throw new RuntimeException("El área de la parcela debe ser positiva.");
 		}
-		if (area < 100.0) {
+		if (area < 100.0){
 			throw new RuntimeException("El área para una parcela debe ser como mínimo 100.");
 		}
 	}
@@ -29,6 +29,27 @@ public class ParcelaService{
 	public void validarEstadoInicial(int id_estado_parcela){
 		if (id_estado_parcela != 1){
 			throw new RuntimeException("El estado de la parcela no es el correcto para el registro, verifique.");
+		}
+	}
+	
+	@Transactional(propagation = Propagation.MANDATORY)
+	public void validarParcelaExiste(int id_parcela){
+		String sql = """
+				SELECT COUNT(id_parcela) FROM PARCELA WHERE id_parcela = ?
+				""";
+		int cont = jdbctemplate.queryForObject(sql, Integer.class, id_parcela);
+		if (cont == 0){
+			throw new RuntimeException("No existe parcela con id = " + id_parcela);
+		}
+	}
+	
+	public void validarParcelaLista(int id_parcela){
+		String sql = """
+				SELECT id_estado_parcela FROM PARCELA WHERE id_parcela = ?
+				""";
+		int estado = jdbctemplate.queryForObject(sql, Integer.class, id_parcela);
+		if (estado != 3){
+			throw new RuntimeException("No se puede sembrar en esta parcela.");
 		}
 	}
 }

@@ -12,24 +12,4 @@ import pe.edu.uni.app.dto.SiembraDto;
 public class SiembraService{
 	@Autowired
 	JdbcTemplate jdbctemplate;
-	@Transactional(propagation = Propagation.MANDATORY)
-	public void validarParcela(int id_parcela){
-		String sql = """
-				SELECT COUNT(id_parcela) FROM PARCELA WHERE id_parcela = ?
-				""";
-		int cont = jdbctemplate.queryForObject(sql, Integer.class, id_parcela);
-		if (cont == 0){
-			throw new RuntimeException("No existe parcela con id = " + id_parcela);
-		}
-	}
-	@Transactional(propagation = Propagation.MANDATORY)
-	public void validarParcelaActiva(int id_parcela){
-		String sql = """
-				SELECT id_estado_parcela FROM PARCELA WHERE id_parcela = ?
-				""";
-		int estado = jdbctemplate.queryForObject(sql, Integer.class, id_parcela);
-		if (estado != 3){
-			throw new RuntimeException("No se puede sembrar en esta parcela.");
-		}
-	}
 }
