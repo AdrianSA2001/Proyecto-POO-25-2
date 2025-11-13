@@ -11,13 +11,8 @@ INSERT INTO ESTADO_EMPLEADO (descripcion) VALUES
 ('Despedido');
 
 INSERT INTO ESTADO_PARCELA (descripcion) VALUES
-('Registrada / No apta aún para siembra'),
-('En preparación del suelo'),
-('Lista para siembra'),
-('Sembrada / Cultivo activo'),
-('En mantenimiento del cultivo'),
-('En descanso / Sin cultivo'),
-('Inutilizable / Terreno dañado');
+('Inactiva'),
+('Activa');
 
 INSERT INTO ESTADO_ACTIVIDAD (descripcion) VALUES
 ('Pendiente'),
@@ -27,12 +22,12 @@ INSERT INTO ESTADO_ACTIVIDAD (descripcion) VALUES
 -- ===========================
 -- 2. Insertar datos en PARCELA
 -- ===========================
-INSERT INTO PARCELA (nombre, area, id_estado_parcela) VALUES
-('Zona A', 100.0, 3),
-('Zona B', 100.0, 3),
-('Zona A', 120.0, 3),
-('Zona C', 120.0, 3),
-('Zona D', 150.0, 3);
+INSERT INTO PARCELA (ubicacion, area, id_estado_parcela) VALUES
+('Zona A', 100.0, 2),
+('Zona B', 100.0, 2),
+('Zona A', 120.0, 2),
+('Zona C', 120.0, 2),
+('Zona D', 150.0, 2);
 
 -- ===========================
 -- 3. Insertar datos en EMPLEADO
@@ -46,14 +41,9 @@ INSERT INTO EMPLEADO (nombre, apellido, telefono, email, dni, contraseña, id_est
 -- 4. Insertar datos en ACTIVIDAD
 -- ===========================
 INSERT INTO ACTIVIDAD (nombre, descripcion) VALUES
-('Arado del terreno', 'Preparar la tierra para la siembra.'),
-('Riego', 'Aplicar agua a los cultivos.'),
-('Siembra', 'Colocar las semillas o plántulas.'),
-('Abonado', 'Aplicar fertilizantes al suelo.'),
-('Aplicación de insecticidas', 'Controlar plagas y enfermedades.'),
-('Deshierbe', 'Eliminar malezas del cultivo.'),
-('Mantenimiento', 'Revisar y cuidar el cultivo.'),
-('Cosecha', 'Recolectar los productos maduros.');
+('Siembra', 'Inicio del cultivo'),
+('Mantenimiento', 'Cuidado intermedio (reigo, abonado, control)'),
+('Cosecha', 'Fin del ciclo de cultivo');
 
 -- ===========================
 -- 5. Insertar datos en TIPO_CULTIVO
