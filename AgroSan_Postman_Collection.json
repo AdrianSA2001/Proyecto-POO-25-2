@@ -1,0 +1,744 @@
+{
+	"info": {
+		"_postman_id": "agrosan-2025-collection",
+		"name": "AgroSan - Sistema de Gestión de Cultivos",
+		"description": "Colección completa de pruebas para el sistema AgroSan\nIncluye casos de ÉXITO y ERROR para cada endpoint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "0. SETUP - Probar Conexión",
+			"item": [
+				{
+					"name": "✅ Listar Parcelas (Test Inicial)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parcela/listar",
+							"host": ["{{base_url}}"],
+							"path": ["parcela", "listar"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "1. EMPLEADOS - Gestión de Personal",
+			"item": [
+				{
+					"name": "✅ SUCCESS - Registrar Empleado",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Pedro\",\n  \"apellido\": \"García\",\n  \"telefono\": \"987654321\",\n  \"email\": \"pedro@agrosan.com\",\n  \"dni\": \"99887766\",\n  \"contrasena\": \"pass123\",\n  \"id_estado_empleado\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/empleado/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["empleado", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Registrar Empleado (DNI duplicado)",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"telefono\": \"999888777\",\n  \"email\": \"nuevo@agrosan.com\",\n  \"dni\": \"12345678\",\n  \"contrasena\": \"pass\",\n  \"id_estado_empleado\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/empleado/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["empleado", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ SUCCESS - Login Empleado",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dni\": \"12345678\",\n  \"contrasena\": \"1234\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/empleado/autenticar",
+							"host": ["{{base_url}}"],
+							"path": ["empleado", "autenticar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Login Incorrecto",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"dni\": \"12345678\",\n  \"contrasena\": \"passwordIncorrecto\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/empleado/autenticar",
+							"host": ["{{base_url}}"],
+							"path": ["empleado", "autenticar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Listar Empleados Activos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/empleado/activos",
+							"host": ["{{base_url}}"],
+							"path": ["empleado", "activos"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. PARCELAS - Gestión de Terrenos",
+			"item": [
+				{
+					"name": "✅ SUCCESS - Registrar Parcela",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ubicacion\": \"Zona E\",\n  \"area\": 150.0,\n  \"id_estado_parcela\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/parcela/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["parcela", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Parcela con área menor a 100",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ubicacion\": \"Zona F\",\n  \"area\": 50.0,\n  \"id_estado_parcela\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/parcela/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["parcela", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Parcela con estado incorrecto",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ubicacion\": \"Zona G\",\n  \"area\": 150.0,\n  \"id_estado_parcela\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/parcela/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["parcela", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Listar Todas las Parcelas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parcela/listar",
+							"host": ["{{base_url}}"],
+							"path": ["parcela", "listar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Listar Parcelas Disponibles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parcela/disponibles",
+							"host": ["{{base_url}}"],
+							"path": ["parcela", "disponibles"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Obtener Parcela Inexistente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/parcela/obtener/999",
+							"host": ["{{base_url}}"],
+							"path": ["parcela", "obtener", "999"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. RF1 - SIEMBRA (Registrar Cultivos)",
+			"item": [
+				{
+					"name": "✅ SUCCESS - Registrar Siembra",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 2,\n  \"id_empleado\": 1,\n  \"cantidad_sembrada\": 30.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/siembra/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["siembra", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Siembra en Parcela Inactiva",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"cantidad_sembrada\": 30.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/siembra/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["siembra", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Siembra con Empleado Inexistente",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 2,\n  \"id_empleado\": 999,\n  \"cantidad_sembrada\": 30.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/siembra/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["siembra", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Cantidad Sembrada Negativa",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 2,\n  \"id_empleado\": 1,\n  \"cantidad_sembrada\": -10.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/siembra/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["siembra", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Listar Todas las Siembras",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/siembra/listar",
+							"host": ["{{base_url}}"],
+							"path": ["siembra", "listar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Listar Siembras por Parcela",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/siembra/parcela/2",
+							"host": ["{{base_url}}"],
+							"path": ["siembra", "parcela", "2"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. RF4 - COSECHA (Registrar y Rendimiento)",
+			"item": [
+				{
+					"name": "✅ SUCCESS - Registrar Cosecha",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"cantidad_cosechada\": 25.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/cosecha/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["cosecha", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Cosecha sin Siembra Previa",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_tipo_cultivo\": 3,\n  \"id_parcela\": 5,\n  \"id_empleado\": 1,\n  \"cantidad_cosechada\": 25.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/cosecha/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["cosecha", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Cantidad Cosechada = 0",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"cantidad_cosechada\": 0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/cosecha/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["cosecha", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Listar Cosechas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/cosecha/listar",
+							"host": ["{{base_url}}"],
+							"path": ["cosecha", "listar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Reporte de Rendimiento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/cosecha/reporte/rendimiento",
+							"host": ["{{base_url}}"],
+							"path": ["cosecha", "reporte", "rendimiento"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Comparar Siembra vs Cosecha",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/cosecha/comparar/1",
+							"host": ["{{base_url}}"],
+							"path": ["cosecha", "comparar", "1"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. RF5 - VENTAS (Control Distribución)",
+			"item": [
+				{
+					"name": "✅ SUCCESS - Registrar Comprador",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Supermercado ABC\",\n  \"telefono\": \"987456321\",\n  \"email\": \"compras@abc.com\",\n  \"direccion\": \"Av. Principal 789\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/venta/comprador/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["venta", "comprador", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ SUCCESS - Registrar Venta",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_comprador\": 1,\n  \"id_tipo_cultivo\": 1,\n  \"cantidad_vendida\": 15.0,\n  \"precio_unitario\": 3.5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/venta/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["venta", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Venta sin Stock Suficiente",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_comprador\": 1,\n  \"id_tipo_cultivo\": 1,\n  \"cantidad_vendida\": 9999.0,\n  \"precio_unitario\": 3.5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/venta/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["venta", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Venta con Comprador Inexistente",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_comprador\": 999,\n  \"id_tipo_cultivo\": 1,\n  \"cantidad_vendida\": 10.0,\n  \"precio_unitario\": 3.5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/venta/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["venta", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Precio Unitario Negativo",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_comprador\": 1,\n  \"id_tipo_cultivo\": 1,\n  \"cantidad_vendida\": 10.0,\n  \"precio_unitario\": -5.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/venta/registrar",
+							"host": ["{{base_url}}"],
+							"path": ["venta", "registrar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Consultar Stock Disponible",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/venta/stock",
+							"host": ["{{base_url}}"],
+							"path": ["venta", "stock"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Reporte de Ventas por Cultivo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/venta/reporte/cultivo",
+							"host": ["{{base_url}}"],
+							"path": ["venta", "reporte", "cultivo"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Listar Ventas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/venta/listar",
+							"host": ["{{base_url}}"],
+							"path": ["venta", "listar"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "6. RF2 - ACTIVIDADES (Calendarización)",
+			"item": [
+				{
+					"name": "✅ Listar Tipos de Actividades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actividad/tipos",
+							"host": ["{{base_url}}"],
+							"path": ["actividad", "tipos"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ SUCCESS - Programar Actividad",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_actividad\": 2,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"fecha_programada\": \"2025-11-20\",\n  \"id_estado_actividad\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/actividad/programar",
+							"host": ["{{base_url}}"],
+							"path": ["actividad", "programar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Fecha Pasada",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_actividad\": 2,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"fecha_programada\": \"2020-01-01\",\n  \"id_estado_actividad\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/actividad/programar",
+							"host": ["{{base_url}}"],
+							"path": ["actividad", "programar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Estado Inicial Incorrecto",
+					"request": {
+						"method": "POST",
+						"header": [{"key": "Content-Type", "value": "application/json"}],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_actividad\": 2,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"fecha_programada\": \"2025-11-20\",\n  \"id_estado_actividad\": 3\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/actividad/programar",
+							"host": ["{{base_url}}"],
+							"path": ["actividad", "programar"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Listar Actividades Pendientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actividad/pendientes",
+							"host": ["{{base_url}}"],
+							"path": ["actividad", "pendientes"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Listar Actividades de Hoy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actividad/hoy",
+							"host": ["{{base_url}}"],
+							"path": ["actividad", "hoy"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Completar Actividad",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actividad/completar/1",
+							"host": ["{{base_url}}"],
+							"path": ["actividad", "completar", "1"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "❌ ERROR - Completar Actividad Inexistente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/actividad/completar/999",
+							"host": ["{{base_url}}"],
+							"path": ["actividad", "completar", "999"]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "7. RF3 - ALERTAS (Recordatorios)",
+			"item": [
+				{
+					"name": "✅ Ver Resumen de Alertas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/alerta/resumen",
+							"host": ["{{base_url}}"],
+							"path": ["alerta", "resumen"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Ver Todas las Alertas Activas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/alerta/activas",
+							"host": ["{{base_url}}"],
+							"path": ["alerta", "activas"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Alertas de Cosecha Próxima",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/alerta/cosecha-proxima",
+							"host": ["{{base_url}}"],
+							"path": ["alerta", "cosecha-proxima"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Alertas de Actividades Hoy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/alerta/actividades-hoy",
+							"host": ["{{base_url}}"],
+							"path": ["alerta", "actividades-hoy"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Alertas de Stock Bajo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/alerta/stock-bajo-semillas",
+							"host": ["{{base_url}}"],
+							"path": ["alerta", "stock-bajo-semillas"]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "✅ Alertas por Prioridad ALTA",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/alerta/prioridad/ALTA",
+							"host": ["{{base_url}}"],
+							"path": ["alerta", "prioridad", "ALTA"]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080/agrosan",
+			"type": "string"
+		}
+	]
+}
+
