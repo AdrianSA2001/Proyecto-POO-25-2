@@ -1,15 +1,12 @@
 package pe.edu.uni.app.dto;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
-
 @Data 
 @AllArgsConstructor 
 @NoArgsConstructor
-public class ParcelaDto {
-	
+public class ParcelaDto{
 	@JsonProperty("id_parcela")
 	private int id_parcela;
 	
@@ -20,6 +17,5 @@ public class ParcelaDto {
 	private double area;
 	
 	@JsonProperty("id_estado_parcela")
-	private int id_estado_parcela;
-	
+	private int id_estado_parcela;	
 }
