@@ -39,9 +39,10 @@ public class EmpleadoService {
 		// Validaciones
 		// ******************************
 		// Validar que el DNI no esté registrado
+		this.validarDni(bean.getDni());
 		this.validarDniUnico(bean.getDni());
-
-		// Validar que el email no esté registrado
+		this.validarTelefono(bean.getTelefono());
+		this.validarEmail(bean.getEmail());
 		if (bean.getEmail() != null && !bean.getEmail().isEmpty()) {
 			this.validarEmailUnico(bean.getEmail());
 		}
@@ -217,6 +218,24 @@ public class EmpleadoService {
 		String sql = "SELECT COUNT(1) FROM EMPLEADO WHERE id_empleado = ?";
 		int cont = jdbcTemplate.queryForObject(sql, Integer.class, idEmpleado);
 		return (cont == 1);
+	}
+	
+	public void validarDni(String dni){
+	    if (dni == null || !dni.matches("\\d{8}")) {
+	        throw new IllegalArgumentException("El DNI debe ser una cadena de 8 dígitos numéricos.");
+	    }
+	}
+	
+	public void validarEmail(String email){
+	    if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+	        throw new IllegalArgumentException("Formato de email no válido.");
+	    }
+	}
+	
+	public void validarTelefono(String telefono) {
+	    if (telefono == null || !telefono.matches("\\d{9}")) {
+	        throw new IllegalArgumentException("El teléfono debe tener exactamente 9 dígitos numéricos.");
+	    }
 	}
 
 	/**

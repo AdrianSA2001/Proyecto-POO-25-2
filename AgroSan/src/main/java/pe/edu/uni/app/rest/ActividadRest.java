@@ -20,6 +20,7 @@ public class ActividadRest{
 	@PostMapping("/programar")
 	public ResponseEntity<?> programarActividad(@RequestBody ActividadProgramadaDto bean, HttpServletRequest request){
 		try {
+			actividadService.validarFecha(bean.getFecha_programada(), "yyyy-MM-dd");
 			ActividadProgramadaDto resultado = actividadService.programarActividad(bean);
 			return ResponseEntity.ok(resultado);
 		} catch (Exception e){

@@ -10,6 +10,7 @@ import pe.edu.uni.app.dto.ActividadProgramadaDto;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 @Service
@@ -201,5 +202,15 @@ public class ActividadService{
 		if (idEstadoActividad != 1) {
 			throw new RuntimeException("El estado inicial de la actividad debe ser 'Pendiente' (1).");
 		}
+	}
+	
+	//VALIDAR EL FORMATO DE FECHA
+	public void validarFecha(String fecha, String formato){
+	    try {
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(formato);
+	        LocalDate.parse(fecha, formatter);
+	    } catch (Exception e){
+	        throw new IllegalArgumentException("Fecha no válida, formato esperado: " + formato);
+	    }
 	}
 }
