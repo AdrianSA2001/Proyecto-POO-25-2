@@ -1,5 +1,4 @@
 package pe.edu.uni.app.service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -8,16 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.uni.app.dto.CosechaDto;
-
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-
 @Service
-public class CosechaService {
-
+public class CosechaService{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -27,50 +23,27 @@ public class CosechaService {
 	@Autowired
 	private EmpleadoService empleadoService;
 
-	/**
-	 * Registrar cosecha (RF4)
-	 * Estilo Coronel: Variables -> Validaciones -> Proceso
-	 */
-	@Transactional(
-			propagation = Propagation.REQUIRES_NEW,
-			rollbackFor = Exception.class
-	)
-	public CosechaDto registrarCosecha(CosechaDto bean) {
-		// ******************************
-		// Variables
-		// ******************************
+	//REGISTRAR LA COSECHA EN LA BD
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	public CosechaDto registrarCosecha(CosechaDto bean){
+		//VARIABLES
 		String sql;
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		LocalDate fechaCosecha = LocalDate.now();
 
-		// ******************************
-		// Validaciones
-		// ******************************
-		// Validar que la parcela existe
+		//VALIDACIONES
 		parcelaService.validarParcelaExiste(bean.getId_parcela());
-
-		// Validar que el empleado existe y está activo
 		empleadoService.validarEmpleadoActivo(bean.getId_empleado());
-
-		// Validar que el tipo de cultivo existe
 		this.validarTipoCultivoExiste(bean.getId_tipo_cultivo());
-
-		// Validar cantidad cosechada
 		this.validarCantidadCosechada(bean.getCantidad_cosechada());
-
-		// Validar que hay una siembra previa en esa parcela y cultivo
 		this.validarExisteSiembra(bean.getId_parcela(), bean.getId_tipo_cultivo());
 
-		// ******************************
-		// Proceso
-		// ******************************
-		// Insertar en HISTORIAL_COSECHA
+		//PROCESO
 		sql = """
 				INSERT INTO HISTORIAL_COSECHA 
 				(id_tipo_cultivo, id_parcela, id_empleado, fecha_cosecha, cantidad_cosechada) 
 				VALUES (?, ?, ?, ?, ?)
 				""";
-
 		jdbcTemplate.update(connection -> {
 			PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id_cosecha"});
 			ps.setInt(1, bean.getId_tipo_cultivo());
@@ -80,34 +53,23 @@ public class CosechaService {
 			ps.setDouble(5, bean.getCantidad_cosechada());
 			return ps;
 		}, keyHolder);
-
-		// Obtener ID generado
 		int idCosecha = keyHolder.getKey().intValue();
 		bean.setId_cosecha(idCosecha);
 		bean.setFecha_cosecha(fechaCosecha.toString());
-
-		// Obtener cantidad estimada (de la siembra más reciente)
 		double cantidadEstimada = this.obtenerCantidadEstimada(bean.getId_parcela(), bean.getId_tipo_cultivo());
 		bean.setCantidad_estimada(cantidadEstimada);
-
-		// Calcular rendimiento (porcentaje real vs estimado)
-		if (cantidadEstimada > 0) {
+		if (cantidadEstimada > 0){
 			double rendimiento = (bean.getCantidad_cosechada() / cantidadEstimada) * 100;
 			bean.setRendimiento(rendimiento);
-		} else {
+		} else{
 			bean.setRendimiento(100.0); // Si no hay estimado, consideramos 100%
 		}
-
-		// Actualizar stock de cosecha (sumar cantidad cosechada)
 		this.actualizarStockCosecha(bean.getId_tipo_cultivo(), bean.getCantidad_cosechada());
-
 		return bean;
 	}
 
-	/**
-	 * Listar todas las cosechas
-	 */
-	public List<Map<String, Object>> listarCosechas() {
+	//LISTAR TODAS LAS COSECHAS
+	public List<Map<String, Object>> listarCosechas(){
 		String sql = """
 				SELECT 
 					hc.id_cosecha, hc.fecha_cosecha, hc.cantidad_cosechada,
@@ -120,16 +82,12 @@ public class CosechaService {
 				JOIN EMPLEADO e ON hc.id_empleado = e.id_empleado
 				ORDER BY hc.fecha_cosecha DESC
 				""";
-
 		return jdbcTemplate.queryForList(sql);
 	}
 
-	/**
-	 * Consultar cosechas por parcela
-	 */
-	public List<Map<String, Object>> listarCosechasPorParcela(int idParcela) {
+	//LISTAR LAS COSECHAS HECHAS EN UNA PARCELA
+	public List<Map<String, Object>> listarCosechasPorParcela(int idParcela){
 		parcelaService.validarParcelaExiste(idParcela);
-
 		String sql = """
 				SELECT 
 					hc.id_cosecha, hc.fecha_cosecha, hc.cantidad_cosechada,
@@ -141,14 +99,11 @@ public class CosechaService {
 				WHERE hc.id_parcela = ?
 				ORDER BY hc.fecha_cosecha DESC
 				""";
-
 		return jdbcTemplate.queryForList(sql, idParcela);
 	}
 
-	/**
-	 * Consultar rendimiento por tipo de cultivo
-	 */
-	public List<Map<String, Object>> reporteRendimientoPorCultivo() {
+	//CONSULTAR EL RENDIMIENTO DE UN CULTIVO
+	public List<Map<String, Object>> reporteRendimientoPorCultivo(){
 		String sql = """
 				SELECT 
 					tc.nombre tipo_cultivo,
@@ -160,16 +115,12 @@ public class CosechaService {
 				GROUP BY tc.nombre
 				ORDER BY total_cosechado DESC
 				""";
-
 		return jdbcTemplate.queryForList(sql);
 	}
 
-	/**
-	 * Comparar siembra vs cosecha (rendimiento)
-	 */
-	public List<Map<String, Object>> compararSiembraVsCosecha(int idParcela) {
+	//COMPARAR SIEMBRA VS COSECHA
+	public List<Map<String, Object>> compararSiembraVsCosecha(int idParcela){
 		parcelaService.validarParcelaExiste(idParcela);
-
 		String sql = """
 				SELECT 
 					tc.nombre cultivo,
@@ -188,18 +139,11 @@ public class CosechaService {
 				WHERE hs.id_parcela = ?
 				GROUP BY tc.nombre
 				""";
-
 		return jdbcTemplate.queryForList(sql, idParcela);
 	}
 
-	// ======================================
-	// MÉTODOS DE VALIDACIÓN
-	// ======================================
-
-	/**
-	 * Validar que el tipo de cultivo existe
-	 */
-	public void validarTipoCultivoExiste(int idTipoCultivo) {
+	//VALIDAR QUE EL TIPO DE CULTIVO EXISTE
+	public void validarTipoCultivoExiste(int idTipoCultivo){
 		String sql = "SELECT COUNT(1) FROM TIPO_CULTIVO WHERE id_tipo_cultivo = ?";
 		int cont = jdbcTemplate.queryForObject(sql, Integer.class, idTipoCultivo);
 		if (cont == 0) {
@@ -207,19 +151,15 @@ public class CosechaService {
 		}
 	}
 
-	/**
-	 * Validar cantidad cosechada
-	 */
-	public void validarCantidadCosechada(double cantidad) {
+	//VALIDAR QUE LA CANTIDAD COSECHADA SEA CORRECTA
+	public void validarCantidadCosechada(double cantidad){
 		if (cantidad <= 0) {
 			throw new RuntimeException("La cantidad cosechada debe ser mayor a 0.");
 		}
 	}
 
-	/**
-	 * Validar que existe una siembra previa
-	 */
-	public void validarExisteSiembra(int idParcela, int idTipoCultivo) {
+	//VALIDAR QUE SE HA SEMBRADO PREVIAMENTE
+	public void validarExisteSiembra(int idParcela, int idTipoCultivo){
 		String sql = """
 				SELECT COUNT(1) 
 				FROM HISTORIAL_SIEMBRA 
@@ -231,40 +171,28 @@ public class CosechaService {
 		}
 	}
 
-	// ======================================
-	// MÉTODOS AUXILIARES
-	// ======================================
-
-	/**
-	 * Obtener cantidad estimada de la última siembra
-	 */
-	private double obtenerCantidadEstimada(int idParcela, int idTipoCultivo) {
+	//OBTENER CANTIDAD ESTIMADA DE LA ÚLTIMA SIEMBRA
+	private double obtenerCantidadEstimada(int idParcela, int idTipoCultivo){
 		String sql = """
 				SELECT TOP 1 cantidad_sembrada 
 				FROM HISTORIAL_SIEMBRA 
 				WHERE id_parcela = ? AND id_tipo_cultivo = ?
 				ORDER BY fecha_siembra DESC
 				""";
-
 		try {
 			Double cantidad = jdbcTemplate.queryForObject(sql, Double.class, idParcela, idTipoCultivo);
 			// Estimación: se asume un rendimiento del 80% de lo sembrado
 			return cantidad != null ? cantidad * 0.8 : 0.0;
-		} catch (Exception e) {
+		} catch (Exception e){
 			return 0.0;
 		}
 	}
 
-	/**
-	 * Actualizar stock de cosecha
-	 */
-	private void actualizarStockCosecha(int idTipoCultivo, double cantidadCosechada) {
-		// Verificar si existe registro en STOCK_COSECHA
+	//ACTUALIZAR EL STOCK LUEGO DE LA COSECHA
+	private void actualizarStockCosecha(int idTipoCultivo, double cantidadCosechada){
 		String sqlCheck = "SELECT COUNT(1) FROM STOCK_COSECHA WHERE id_tipo_cultivo = ?";
 		int existe = jdbcTemplate.queryForObject(sqlCheck, Integer.class, idTipoCultivo);
-
-		if (existe > 0) {
-			// Actualizar stock existente
+		if (existe > 0){
 			String sqlUpdate = """
 					UPDATE STOCK_COSECHA 
 					SET cantidad_disponible = cantidad_disponible + ?,
@@ -272,8 +200,7 @@ public class CosechaService {
 					WHERE id_tipo_cultivo = ?
 					""";
 			jdbcTemplate.update(sqlUpdate, cantidadCosechada, idTipoCultivo);
-		} else {
-			// Crear nuevo registro de stock
+		} else{
 			String sqlInsert = """
 					INSERT INTO STOCK_COSECHA (id_tipo_cultivo, cantidad_disponible, fecha_actualizacion)
 					VALUES (?, ?, GETDATE())
@@ -281,6 +208,4 @@ public class CosechaService {
 			jdbcTemplate.update(sqlInsert, idTipoCultivo, cantidadCosechada);
 		}
 	}
-
 }
-
