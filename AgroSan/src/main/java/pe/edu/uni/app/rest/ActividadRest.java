@@ -1,5 +1,4 @@
 package pe.edu.uni.app.rest;
-
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,27 +7,22 @@ import org.springframework.web.bind.annotation.*;
 import pe.edu.uni.app.dto.ActividadProgramadaDto;
 import pe.edu.uni.app.dto.ErrorResponse;
 import pe.edu.uni.app.service.ActividadService;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-
 @RestController
 @RequestMapping("/agrosan/actividad")
-public class ActividadRest {
-
+public class ActividadRest{
 	@Autowired
 	private ActividadService actividadService;
 
-	/**
-	 * Programar actividad (RF2)
-	 */
+	//PROGRAMAR UNA ACTIVIDAD
 	@PostMapping("/programar")
-	public ResponseEntity<?> programarActividad(@RequestBody ActividadProgramadaDto bean, HttpServletRequest request) {
+	public ResponseEntity<?> programarActividad(@RequestBody ActividadProgramadaDto bean, HttpServletRequest request){
 		try {
 			ActividadProgramadaDto resultado = actividadService.programarActividad(bean);
 			return ResponseEntity.ok(resultado);
-		} catch (Exception e) {
+		} catch (Exception e){
 			ErrorResponse error = new ErrorResponse(
 					e.getMessage(),
 					LocalDateTime.now().toString(),
@@ -38,15 +32,18 @@ public class ActividadRest {
 		}
 	}
 
-	/**
-	 * Listar actividades pendientes
-	 */
+	//MOSTRAR LAS ACTIVIDADES PENDIENTES
 	@GetMapping("/pendientes")
-	public ResponseEntity<?> listarActividadesPendientes(HttpServletRequest request) {
+	public ResponseEntity<?> listarActividadesPendientes(HttpServletRequest request){
 		try {
 			List<Map<String, Object>> resultado = actividadService.listarActividadesPendientes();
+			if (resultado.isEmpty()){
+	            return ResponseEntity.ok(
+	                Map.of("mensaje", "No hay actividades pendientes.")
+	            );
+	        }
 			return ResponseEntity.ok(resultado);
-		} catch (Exception e) {
+		} catch (Exception e){
 			ErrorResponse error = new ErrorResponse(
 					e.getMessage(),
 					LocalDateTime.now().toString(),
@@ -56,13 +53,16 @@ public class ActividadRest {
 		}
 	}
 
-	/**
-	 * Listar actividades de hoy
-	 */
+	//MOSTRAR LAS ACTIVIDADES PROGRAMADAS PARA HOY
 	@GetMapping("/hoy")
-	public ResponseEntity<?> listarActividadesHoy(HttpServletRequest request) {
+	public ResponseEntity<?> listarActividadesHoy(HttpServletRequest request){
 		try {
 			List<Map<String, Object>> resultado = actividadService.listarActividadesHoy();
+			if (resultado.isEmpty()){
+	            return ResponseEntity.ok(
+	                Map.of("mensaje", "No hay actividades programadas para hoy.")
+	            );
+	        }
 			return ResponseEntity.ok(resultado);
 		} catch (Exception e) {
 			ErrorResponse error = new ErrorResponse(
@@ -74,15 +74,13 @@ public class ActividadRest {
 		}
 	}
 
-	/**
-	 * Listar actividades por parcela
-	 */
+	//MOSTRAR LAS ACTIVIDADES PROGRAMADAS EN UNA PARCELA
 	@GetMapping("/parcela/{idParcela}")
-	public ResponseEntity<?> listarActividadesPorParcela(@PathVariable int idParcela, HttpServletRequest request) {
+	public ResponseEntity<?> listarActividadesPorParcela(@PathVariable int idParcela, HttpServletRequest request){
 		try {
 			List<Map<String, Object>> resultado = actividadService.listarActividadesPorParcela(idParcela);
 			return ResponseEntity.ok(resultado);
-		} catch (Exception e) {
+		} catch (Exception e){
 			ErrorResponse error = new ErrorResponse(
 					e.getMessage(),
 					LocalDateTime.now().toString(),
@@ -92,15 +90,13 @@ public class ActividadRest {
 		}
 	}
 
-	/**
-	 * Marcar actividad como completada
-	 */
+	//COMPLETAR UNA ACTIVIDAD
 	@PutMapping("/completar/{id}")
-	public ResponseEntity<?> completarActividad(@PathVariable int id, HttpServletRequest request) {
+	public ResponseEntity<?> completarActividad(@PathVariable int id, HttpServletRequest request){
 		try {
 			actividadService.completarActividad(id);
 			return ResponseEntity.ok(Map.of("mensaje", "Actividad completada exitosamente"));
-		} catch (Exception e) {
+		} catch (Exception e){
 			ErrorResponse error = new ErrorResponse(
 					e.getMessage(),
 					LocalDateTime.now().toString(),
@@ -110,11 +106,9 @@ public class ActividadRest {
 		}
 	}
 
-	/**
-	 * Iniciar actividad
-	 */
+	//INICIAR UNA ACTIVIDAD
 	@PutMapping("/iniciar/{id}")
-	public ResponseEntity<?> iniciarActividad(@PathVariable int id, HttpServletRequest request) {
+	public ResponseEntity<?> iniciarActividad(@PathVariable int id, HttpServletRequest request){
 		try {
 			actividadService.iniciarActividad(id);
 			return ResponseEntity.ok(Map.of("mensaje", "Actividad iniciada exitosamente"));
