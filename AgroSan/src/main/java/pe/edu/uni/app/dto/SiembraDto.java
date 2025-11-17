@@ -1,15 +1,12 @@
 package pe.edu.uni.app.dto;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;
-
 @Data 
 @AllArgsConstructor 
 @NoArgsConstructor
-public class SiembraDto {
-	
+public class SiembraDto{
 	@JsonProperty("id_siembra")
 	private int id_siembra;
 	
@@ -30,5 +27,4 @@ public class SiembraDto {
 	
 	@JsonProperty("fecha_estimada_cosecha")
 	private String fecha_estimada_cosecha;
-	
 }

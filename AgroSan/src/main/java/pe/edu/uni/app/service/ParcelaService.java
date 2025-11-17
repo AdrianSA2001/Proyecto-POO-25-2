@@ -16,7 +16,7 @@ public class ParcelaService{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	//TRANSACCIÓN PRINCIPAL
+	//REGISTRAR UNA NUEVA PARCELA EN LA BD
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public ParcelaDto registrarParcela(ParcelaDto bean){
 		//VARIABLES
@@ -41,8 +41,8 @@ public class ParcelaService{
 		return bean;
 	}
 	
+	//OBTENER DATOS DE LA PARCELA
 	public ParcelaDto obtenerParcela(int idParcela){
-		//VALIDAR QUE EXISTE
 		this.validarParcelaExiste(idParcela);
 		String sql = """
 				SELECT id_parcela, area, id_estado_parcela 
@@ -56,6 +56,7 @@ public class ParcelaService{
 		);
 	}
 	
+	//MOSTRAR TODAS LAS PARCELAS
 	public List<Map<String, Object>> listarParcelas(){
 		String sql = """
 				SELECT 
@@ -68,6 +69,7 @@ public class ParcelaService{
 		return jdbcTemplate.queryForList(sql);
 	}
 	
+	//MOSTRAR LAS PARCELAS DISPONIBLES (ACTIVADAS)
 	public List<Map<String, Object>> listarParcelasDisponibles(){
 		String sql = """
 				SELECT 
@@ -81,7 +83,7 @@ public class ParcelaService{
 		return jdbcTemplate.queryForList(sql);
 	}
 
-	//MÉTODOS DE VALIDACIÓN
+	//VALIDAR EL AREA DE LA PARCELA
 	public void validarArea(double area){
 		if (area < 0.0) {
 			throw new RuntimeException("El área de la parcela debe ser positiva.");
@@ -91,12 +93,14 @@ public class ParcelaService{
 		}
 	}
 	
+	//VALIDAR QUE LA PARCELA ESTE INACTIVA AL REGISTRARSE
 	public void validarEstadoInicial(int idEstadoParcela){
 		if (idEstadoParcela != 1) {
 			throw new RuntimeException("El estado de la parcela debe ser 'Inactiva' (1) para el registro inicial.");
 		}
 	}
 	
+	//VALIDAR QUE LA PARCELA EXISTE EN LA BD
 	public void validarParcelaExiste(int idParcela){
 		String sql = "SELECT COUNT(1) FROM PARCELA WHERE id_parcela = ?";
 		int cont = jdbcTemplate.queryForObject(sql, Integer.class, idParcela);
@@ -105,8 +109,8 @@ public class ParcelaService{
 		}
 	}
 	
+	//VALIDAR QUE LA PARCELA ESTÁ ACTIVA
 	public void validarParcelaActiva(int idParcela){
-		//VALIDAR QUE EXISTE
 		this.validarParcelaExiste(idParcela);
 		String sql = "SELECT id_estado_parcela FROM PARCELA WHERE id_parcela = ?";
 		int estado = jdbcTemplate.queryForObject(sql, Integer.class, idParcela);
@@ -115,19 +119,21 @@ public class ParcelaService{
 		}
 	}
 	
+	//OBTENER EL ESTADO DE LA PARCELA
 	public int obtenerEstadoParcela(int idParcela){
 		this.validarParcelaExiste(idParcela);
 		String sql = "SELECT id_estado_parcela FROM PARCELA WHERE id_parcela = ?";
 		return jdbcTemplate.queryForObject(sql, Integer.class, idParcela);
 	}
 	
+	//VALIDAR QUE LA PARCELA EXISTE (RETORNA UN BOOLEANO)
 	public boolean existeParcela(int idParcela){
 		String sql = "SELECT COUNT(1) FROM PARCELA WHERE id_parcela = ?";
 		int cont = jdbcTemplate.queryForObject(sql, Integer.class, idParcela);
 		return (cont == 1);
 	}
 	
-	
+	//ACTUALIZAR EL ESTADO DE LA PARCELA
 	@Transactional(propagation = Propagation.MANDATORY)
 	public void cambiarEstadoParcela(int idParcela, int nuevoEstado){
 		this.validarParcelaExiste(idParcela);

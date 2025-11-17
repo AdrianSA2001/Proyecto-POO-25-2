@@ -1,5 +1,4 @@
 package pe.edu.uni.app.rest;
-
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,27 +7,22 @@ import org.springframework.web.bind.annotation.*;
 import pe.edu.uni.app.dto.ErrorResponse;
 import pe.edu.uni.app.dto.SiembraDto;
 import pe.edu.uni.app.service.SiembraService;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-
 @RestController
 @RequestMapping("/agrosan/siembra")
-public class SiembraRest {
-
+public class SiembraRest{
 	@Autowired
 	private SiembraService siembraService;
-
-	/**
-	 * Registrar nueva siembra (RF1)
-	 */
+	
+	//REGISTRAR UNA NUEVA SIEMBRA EN LA BD
 	@PostMapping("/registrar")
-	public ResponseEntity<?> registrarSiembra(@RequestBody SiembraDto bean, HttpServletRequest request) {
+	public ResponseEntity<?> registrarSiembra(@RequestBody SiembraDto bean, HttpServletRequest request){
 		try {
 			SiembraDto resultado = siembraService.registrarSiembra(bean);
 			return ResponseEntity.ok(resultado);
-		} catch (Exception e) {
+		} catch (Exception e){
 			ErrorResponse error = new ErrorResponse(
 					e.getMessage(),
 					LocalDateTime.now().toString(),
@@ -38,9 +32,7 @@ public class SiembraRest {
 		}
 	}
 
-	/**
-	 * Listar todas las siembras
-	 */
+	//MOSTRAR TODAS LAS SIEMBRAS?
 	@GetMapping("/listar")
 	public ResponseEntity<?> listarSiembras(HttpServletRequest request) {
 		try {
