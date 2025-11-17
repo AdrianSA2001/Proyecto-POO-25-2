@@ -32,13 +32,13 @@ public class SiembraRest{
 		}
 	}
 
-	//MOSTRAR TODAS LAS SIEMBRAS?
+	//MOSTRAR TODAS LAS SIEMBRAS
 	@GetMapping("/listar")
-	public ResponseEntity<?> listarSiembras(HttpServletRequest request) {
+	public ResponseEntity<?> listarSiembras(HttpServletRequest request){
 		try {
 			List<Map<String, Object>> resultado = siembraService.listarSiembras();
 			return ResponseEntity.ok(resultado);
-		} catch (Exception e) {
+		} catch (Exception e){
 			ErrorResponse error = new ErrorResponse(
 					e.getMessage(),
 					LocalDateTime.now().toString(),
@@ -47,16 +47,22 @@ public class SiembraRest{
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 		}
 	}
-
-	/**
-	 * Listar siembras por parcela
-	 */
+	
+	//MOSTRAR LAS SIEMBRAS HECHAS EN UNA PARCELA
 	@GetMapping("/parcela/{idParcela}")
-	public ResponseEntity<?> listarSiembrasPorParcela(@PathVariable int idParcela, HttpServletRequest request) {
+	public ResponseEntity<?> listarSiembrasPorParcela(@PathVariable int idParcela, HttpServletRequest request){
 		try {
 			List<Map<String, Object>> resultado = siembraService.listarSiembrasPorParcela(idParcela);
+			if (resultado.isEmpty()){
+	            ErrorResponse error = new ErrorResponse(
+	                "No hay siembras registradas para esta parcela.",
+	                LocalDateTime.now().toString(),
+	                request.getRequestURI()
+	            );
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	        }
 			return ResponseEntity.ok(resultado);
-		} catch (Exception e) {
+		} catch (Exception e){
 			ErrorResponse error = new ErrorResponse(
 					e.getMessage(),
 					LocalDateTime.now().toString(),
@@ -65,6 +71,4 @@ public class SiembraRest{
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 		}
 	}
-
 }
-

@@ -82,6 +82,20 @@ public class ParcelaService{
 				""";
 		return jdbcTemplate.queryForList(sql);
 	}
+	
+	//LISTAR LAS PARCELAS NO DISPONIBLES (INACTIVADAS)
+		public List<Map<String, Object>> listarParcelasNoDisponibles(){
+			String sql = """
+					SELECT 
+						p.id_parcela, p.ubicacion, p.area,
+						ep.descripcion estado_parcela
+					FROM PARCELA p
+					JOIN ESTADO_PARCELA ep ON p.id_estado_parcela = ep.id_estado_parcela
+					WHERE p.id_estado_parcela = 1
+					ORDER BY p.id_parcela
+					""";
+			return jdbcTemplate.queryForList(sql);
+		}
 
 	//VALIDAR EL AREA DE LA PARCELA
 	public void validarArea(double area){

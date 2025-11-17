@@ -39,34 +39,7 @@
 					"response": []
 				},
 				{
-					"name": "Registrar empleado con DNI duplicado",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"nombre\": \"Juan\",\n  \"apellido\": \"Pérez\",\n  \"telefono\": \"999888777\",\n  \"email\": \"nuevo@agrosan.com\",\n  \"dni\": \"12345678\",\n  \"contrasena\": \"pass\",\n  \"id_estado_empleado\": \"1\"\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/empleado/registrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"empleado",
-								"registrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "✅ Listar Empleados Activos",
+					"name": "Listar a todos los empleados activos",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -82,6 +55,25 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Listar a un empleado por su ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/empleado/obtener/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"empleado",
+								"obtener",
+								"1"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -89,7 +81,7 @@
 			"name": "2. PARCELAS - Gestión de Terrenos",
 			"item": [
 				{
-					"name": "✅ SUCCESS - Registrar Parcela",
+					"name": "Registrar una nueva parcela",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -116,61 +108,7 @@
 					"response": []
 				},
 				{
-					"name": "❌ ERROR - Parcela con área menor a 100",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"ubicacion\": \"Zona F\",\n  \"area\": 50.0,\n  \"id_estado_parcela\": 1\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/parcela/registrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"parcela",
-								"registrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "❌ ERROR - Parcela con estado incorrecto",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"ubicacion\": \"Zona G\",\n  \"area\": 150.0,\n  \"id_estado_parcela\": 2\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/parcela/registrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"parcela",
-								"registrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "✅ Listar Todas las Parcelas",
+					"name": "Listar todas las parcelas",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -188,7 +126,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Listar Parcelas Disponibles",
+					"name": "Listar todas las parcelas activas",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -206,19 +144,18 @@
 					"response": []
 				},
 				{
-					"name": "❌ ERROR - Obtener Parcela Inexistente",
+					"name": "Listar todas las parcelas inactivas",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/parcela/obtener/999",
+							"raw": "{{base_url}}/parcela/nodisponibles",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"parcela",
-								"obtener",
-								"999"
+								"nodisponibles"
 							]
 						}
 					},
@@ -230,7 +167,7 @@
 			"name": "3. RF1 - SIEMBRA (Registrar Cultivos)",
 			"item": [
 				{
-					"name": "✅ SUCCESS - Registrar Siembra",
+					"name": "Registrar una nueva siembra",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -257,88 +194,7 @@
 					"response": []
 				},
 				{
-					"name": "❌ ERROR - Siembra en Parcela Inactiva",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"cantidad_sembrada\": 30.0\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/siembra/registrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"siembra",
-								"registrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "❌ ERROR - Siembra con Empleado Inexistente",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 2,\n  \"id_empleado\": 999,\n  \"cantidad_sembrada\": 30.0\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/siembra/registrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"siembra",
-								"registrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "❌ ERROR - Cantidad Sembrada Negativa",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 2,\n  \"id_empleado\": 1,\n  \"cantidad_sembrada\": -10.0\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/siembra/registrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"siembra",
-								"registrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "✅ Listar Todas las Siembras",
+					"name": "Listar todas las siembras",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -356,19 +212,19 @@
 					"response": []
 				},
 				{
-					"name": "✅ Listar Siembras por Parcela",
+					"name": "Listar las siembras hechas en una parcela",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/siembra/parcela/2",
+							"raw": "{{base_url}}/siembra/parcela/6",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"siembra",
 								"parcela",
-								"2"
+								"6"
 							]
 						}
 					},

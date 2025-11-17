@@ -62,7 +62,7 @@ public class SiembraService{
 		return bean;
 	}
 	
-	//MOSTRAR TODAS LAS PARCELAS
+	//LISTAR TODAS LAS PARCELAS
 	public List<Map<String, Object>> listarSiembras(){
 		String sql = """
 				SELECT 
@@ -74,7 +74,7 @@ public class SiembraService{
 				JOIN TIPO_CULTIVO tc ON hs.id_tipo_cultivo = tc.id_tipo_cultivo
 				JOIN PARCELA p ON hs.id_parcela = p.id_parcela
 				JOIN EMPLEADO e ON hs.id_empleado = e.id_empleado
-				ORDER BY hs.fecha_siembra DESC
+				ORDER BY hs.fecha_siembra ASC
 				""";
 		return jdbcTemplate.queryForList(sql);
 	}

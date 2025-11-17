@@ -64,11 +64,19 @@ public class ParcelaRest{
 		}
 	}
 
-	//MOSTRAR TODAS LAS PARCELAS LISTAS PARA LA SIEMBRA
+	//MOSTRAR TODAS LAS PARCELAS LISTAS (ACTIVAS) PARA LA SIEMBRA
 	@GetMapping("/disponibles")
 	public ResponseEntity<?> listarParcelasDisponibles(HttpServletRequest request){
 		try {
 			List<Map<String, Object>> resultado = parcelaService.listarParcelasDisponibles();
+			if (resultado.isEmpty()) {
+	            ErrorResponse error = new ErrorResponse(
+	                "Actualmente no hay parcelas activas en el sistema.",
+	                LocalDateTime.now().toString(),
+	                request.getRequestURI()
+	            );
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+	        }
 			return ResponseEntity.ok(resultado);
 		} catch (Exception e){
 			ErrorResponse error = new ErrorResponse(
@@ -79,4 +87,28 @@ public class ParcelaRest{
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 		}
 	}
+	
+	//MOSTRAR TODAS LAS PARCELAS NO LISTAS (INACTIVAS) PARA LA SIEMBRA
+		@GetMapping("/nodisponibles")
+		public ResponseEntity<?> listarParcelasNoDisponibles(HttpServletRequest request){
+			try {
+				List<Map<String, Object>> resultado = parcelaService.listarParcelasNoDisponibles();
+				if (resultado.isEmpty()) {
+		            ErrorResponse error = new ErrorResponse(
+		                "Actualmente no hay parcelas inactivas en el sistema.",
+		                LocalDateTime.now().toString(),
+		                request.getRequestURI()
+		            );
+		            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+		        }
+				return ResponseEntity.ok(resultado);
+			} catch (Exception e){
+				ErrorResponse error = new ErrorResponse(
+						e.getMessage(),
+						LocalDateTime.now().toString(),
+						request.getRequestURI()
+				);
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+			}
+		}
 }

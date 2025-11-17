@@ -39,9 +39,12 @@ public class ActividadRest{
 		try {
 			List<Map<String, Object>> resultado = actividadService.listarActividadesPendientes();
 			if (resultado.isEmpty()){
-	            return ResponseEntity.ok(
-	                Map.of("mensaje", "No hay actividades pendientes.")
+	            ErrorResponse error = new ErrorResponse(
+	                "Actualmente no hay actividades pendientes.",
+	                LocalDateTime.now().toString(),
+	                request.getRequestURI()
 	            );
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	        }
 			return ResponseEntity.ok(resultado);
 		} catch (Exception e){
@@ -60,9 +63,12 @@ public class ActividadRest{
 		try {
 			List<Map<String, Object>> resultado = actividadService.listarActividadesHoy();
 			if (resultado.isEmpty()){
-	            return ResponseEntity.ok(
-	                Map.of("mensaje", "No hay actividades programadas para hoy.")
+	            ErrorResponse error = new ErrorResponse(
+	                "Actualmente no hay actividades programadas para hoy.",
+	                LocalDateTime.now().toString(),
+	                request.getRequestURI()
 	            );
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 	        }
 			return ResponseEntity.ok(resultado);
 		} catch (Exception e) {
