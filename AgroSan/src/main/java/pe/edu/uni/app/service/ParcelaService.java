@@ -41,7 +41,7 @@ public class ParcelaService{
 		return bean;
 	}
 	
-	//OBTENER DATOS DE LA PARCELA
+	//OBTENER DATOS DE UNA PARCELA
 	public ParcelaDto obtenerParcela(int idParcela){
 		this.validarParcelaExiste(idParcela);
 		String sql = """
@@ -56,7 +56,7 @@ public class ParcelaService{
 		);
 	}
 	
-	//MOSTRAR TODAS LAS PARCELAS
+	//LISTAR TODAS LAS PARCELAS
 	public List<Map<String, Object>> listarParcelas(){
 		String sql = """
 				SELECT 
@@ -69,7 +69,7 @@ public class ParcelaService{
 		return jdbcTemplate.queryForList(sql);
 	}
 	
-	//MOSTRAR LAS PARCELAS DISPONIBLES (ACTIVADAS)
+	//LISTAR LAS PARCELAS DISPONIBLES (ACTIVADAS)
 	public List<Map<String, Object>> listarParcelasDisponibles(){
 		String sql = """
 				SELECT 
