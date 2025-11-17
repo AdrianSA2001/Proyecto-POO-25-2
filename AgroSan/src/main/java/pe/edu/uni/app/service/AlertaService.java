@@ -1,40 +1,33 @@
 package pe.edu.uni.app.service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 @Service
-public class AlertaService {
-
+public class AlertaService{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	/**
-	 * Obtener todas las alertas activas (RF3)
-	 */
+	//OBTENER TODAS LAS ALERTAS ACTIVAS
 	public List<Map<String, Object>> obtenerAlertasActivas() {
 		List<Map<String, Object>> alertas = new ArrayList<>();
 
-		// 1. Alertas de cosecha próxima
+		// 1. ALERTAS DE COSECHA PRÓXIMA
 		alertas.addAll(this.alertasCosechaProxima());
 
-		// 2. Alertas de actividades pendientes para hoy
+		// 2. ALERTAS ACTIVIDADES PENDIENTES PARA HOY
 		alertas.addAll(this.alertasActividadesHoy());
 
-		// 3. Alertas de stock bajo de semillas
+		// 3. ALERTAS DE STOCK BAJO EN SEMILLAS
 		alertas.addAll(this.alertasStockBajoSemillas());
 
-		// 4. Alertas de stock bajo de insumos
+		// 4. ALERTAS DE STOCK BAJO EN INSUMOS
 		alertas.addAll(this.alertasStockBajoInsumos());
-
 		return alertas;
 	}
 
@@ -293,6 +286,4 @@ public class AlertaService {
 				.filter(a -> prioridad.equalsIgnoreCase((String) a.get("prioridad")))
 				.toList();
 	}
-
 }
-

@@ -1,5 +1,4 @@
 package pe.edu.uni.app.service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -8,16 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.uni.app.dto.ActividadProgramadaDto;
-
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-
 @Service
-public class ActividadService {
-
+public class ActividadService{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -27,48 +23,26 @@ public class ActividadService {
 	@Autowired
 	private EmpleadoService empleadoService;
 
-	/**
-	 * Programar actividad agrícola (RF2)
-	 * Estilo Coronel: Variables -> Validaciones -> Proceso
-	 */
-	@Transactional(
-			propagation = Propagation.REQUIRES_NEW,
-			rollbackFor = Exception.class
-	)
+	//PROGRAMAR UNA ACTIVIDAD Y REGISTRARLA EN LA BD
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public ActividadProgramadaDto programarActividad(ActividadProgramadaDto bean) {
-		// ******************************
-		// Variables
-		// ******************************
+		//VARIABLES
 		String sql;
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 
-		// ******************************
-		// Validaciones
-		// ******************************
-		// Validar que la actividad existe
+		//VALIDACIONES
 		this.validarActividadExiste(bean.getId_actividad());
-
-		// Validar que la parcela existe
 		parcelaService.validarParcelaExiste(bean.getId_parcela());
-
-		// Validar que el empleado existe y está activo
 		empleadoService.validarEmpleadoActivo(bean.getId_empleado());
-
-		// Validar fecha programada
 		this.validarFechaProgramada(bean.getFecha_programada());
-
-		// Validar estado inicial (debe ser Pendiente = 1)
 		this.validarEstadoInicial(bean.getId_estado_actividad());
-
-		// ******************************
-		// Proceso
-		// ******************************
+		
+		//PROCESO
 		sql = """
 				INSERT INTO ACTIVIDAD_PROGRAMADA 
 				(id_actividad, id_parcela, id_empleado, fecha_programada, id_estado_actividad) 
 				VALUES (?, ?, ?, ?, ?)
 				""";
-
 		jdbcTemplate.update(connection -> {
 			PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id_actividad_programada"});
 			ps.setInt(1, bean.getId_actividad());
@@ -78,17 +52,12 @@ public class ActividadService {
 			ps.setInt(5, bean.getId_estado_actividad());
 			return ps;
 		}, keyHolder);
-
-		// Obtener ID generado
 		int idGenerado = keyHolder.getKey().intValue();
 		bean.setId_actividad_programada(idGenerado);
-
 		return bean;
 	}
 
-	/**
-	 * Listar actividades programadas pendientes
-	 */
+	//LISTAR ACTIVIDADES PROGRAMADAS QUE ESTAN PENDIENTES
 	public List<Map<String, Object>> listarActividadesPendientes() {
 		String sql = """
 				SELECT 
@@ -105,13 +74,10 @@ public class ActividadService {
 				WHERE ap.id_estado_actividad = 1
 				ORDER BY ap.fecha_programada ASC
 				""";
-
 		return jdbcTemplate.queryForList(sql);
 	}
 
-	/**
-	 * Listar actividades programadas para hoy
-	 */
+	//LISTAR ACTIVIDADES PROGRAMADAS PARA HOY
 	public List<Map<String, Object>> listarActividadesHoy() {
 		String sql = """
 				SELECT 
@@ -128,16 +94,12 @@ public class ActividadService {
 				WHERE ap.fecha_programada = CAST(GETDATE() AS DATE)
 				ORDER BY a.nombre
 				""";
-
 		return jdbcTemplate.queryForList(sql);
 	}
 
-	/**
-	 * Listar actividades por parcela
-	 */
+	//LISTAR LAS ACTIVIDADES PROGRAMADAS EN UNA PARCELA
 	public List<Map<String, Object>> listarActividadesPorParcela(int idParcela) {
 		parcelaService.validarParcelaExiste(idParcela);
-
 		String sql = """
 				SELECT 
 					ap.id_actividad_programada, ap.fecha_programada,
@@ -151,72 +113,47 @@ public class ActividadService {
 				WHERE ap.id_parcela = ?
 				ORDER BY ap.fecha_programada DESC
 				""";
-
 		return jdbcTemplate.queryForList(sql, idParcela);
 	}
 
-	/**
-	 * Marcar actividad como completada
-	 */
-	@Transactional(
-			propagation = Propagation.REQUIRES_NEW,
-			rollbackFor = Exception.class
-	)
-	public void completarActividad(int idActividadProgramada) {
-		// Validar que la actividad programada existe
+	//CAMBIAR EL ESTADO DE LA ACTIVIDAD A COMPLETADA
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	public void completarActividad(int idActividadProgramada){
 		this.validarActividadProgramadaExiste(idActividadProgramada);
-
-		// Cambiar estado a Finalizada (3)
 		String sql = """
 				UPDATE ACTIVIDAD_PROGRAMADA 
 				SET id_estado_actividad = 3 
 				WHERE id_actividad_programada = ?
 				""";
-
 		jdbcTemplate.update(sql, idActividadProgramada);
 	}
 
-	/**
-	 * Marcar actividad como en curso
-	 */
-	@Transactional(
-			propagation = Propagation.REQUIRES_NEW,
-			rollbackFor = Exception.class
-	)
-	public void iniciarActividad(int idActividadProgramada) {
-		// Validar que la actividad programada existe
+	//MOSTRAR LA ACTIVIDAD COMO EN "CURSO"
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	public void iniciarActividad(int idActividadProgramada){
 		this.validarActividadProgramadaExiste(idActividadProgramada);
-
-		// Cambiar estado a En curso (2)
 		String sql = """
 				UPDATE ACTIVIDAD_PROGRAMADA 
 				SET id_estado_actividad = 2 
 				WHERE id_actividad_programada = ?
 				""";
-
 		jdbcTemplate.update(sql, idActividadProgramada);
 	}
 
-	/**
-	 * Listar tipos de actividades disponibles
-	 */
-	public List<Map<String, Object>> listarTiposActividades() {
+	//LISTAR LAS ACTIVIDADES MARCADAS COMO DISPONIBLES
+	public List<Map<String, Object>> listarTiposActividades(){
 		String sql = """
 				SELECT 
 					id_actividad, nombre, descripcion
 				FROM ACTIVIDAD
 				ORDER BY nombre
 				""";
-
 		return jdbcTemplate.queryForList(sql);
 	}
 
-	/**
-	 * Reporte de actividades completadas por empleado
-	 */
+	//LISTAR LAS ACTIVIDADES COMPLETADAS POR UN EMPLEADO
 	public List<Map<String, Object>> reporteActividadesPorEmpleado(int idEmpleado) {
 		empleadoService.validarEmpleadoExiste(idEmpleado);
-
 		String sql = """
 				SELECT 
 					a.nombre actividad,
@@ -229,17 +166,10 @@ public class ActividadService {
 				GROUP BY a.nombre
 				ORDER BY total_actividades DESC
 				""";
-
 		return jdbcTemplate.queryForList(sql, idEmpleado);
 	}
 
-	// ======================================
-	// MÉTODOS DE VALIDACIÓN
-	// ======================================
-
-	/**
-	 * Validar que la actividad existe
-	 */
+	//VALIDAR QUE LA ACTIVIDAD EXISTE EN LA BD
 	public void validarActividadExiste(int idActividad) {
 		String sql = "SELECT COUNT(1) FROM ACTIVIDAD WHERE id_actividad = ?";
 		int cont = jdbcTemplate.queryForObject(sql, Integer.class, idActividad);
@@ -248,9 +178,7 @@ public class ActividadService {
 		}
 	}
 
-	/**
-	 * Validar que la actividad programada existe
-	 */
+	//VALIDAR QUE LA ACTIVIDAD ESTA PROGRAMADA
 	public void validarActividadProgramadaExiste(int idActividadProgramada) {
 		String sql = "SELECT COUNT(1) FROM ACTIVIDAD_PROGRAMADA WHERE id_actividad_programada = ?";
 		int cont = jdbcTemplate.queryForObject(sql, Integer.class, idActividadProgramada);
@@ -259,26 +187,19 @@ public class ActividadService {
 		}
 	}
 
-	/**
-	 * Validar fecha programada (no debe ser pasada)
-	 */
+	//VALIDAR QUE LA FECHA PROGRAMADA ES CORRECTA
 	public void validarFechaProgramada(String fechaProgramada) {
 		LocalDate fecha = LocalDate.parse(fechaProgramada);
 		LocalDate hoy = LocalDate.now();
-
 		if (fecha.isBefore(hoy)) {
 			throw new RuntimeException("La fecha programada no puede ser anterior a la fecha actual.");
 		}
 	}
 
-	/**
-	 * Validar estado inicial (debe ser Pendiente = 1)
-	 */
+	//VALIDAR EL ESTADO (PENDIENTE) AL PROGRAMAR UNA ACTIVIDAD
 	public void validarEstadoInicial(int idEstadoActividad) {
 		if (idEstadoActividad != 1) {
 			throw new RuntimeException("El estado inicial de la actividad debe ser 'Pendiente' (1).");
 		}
 	}
-
 }
-
