@@ -82,7 +82,7 @@ public class EmpleadoRest{
 	}
 
 	/**
-	 * Aute empleado (login)
+	 * Autenticar empleado (login)
 	 */
 	@PostMapping("/autenticar")
 	public ResponseEntity<?> autenticar(@RequestBody Map<String, String> credenciales, HttpServletRequest request){

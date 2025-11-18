@@ -74,6 +74,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Autenticar empleado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"cantidad_cosechada\": 25.0\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/empleado/autenticar",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"empleado",
+								"autenticar"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

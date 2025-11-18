@@ -36,6 +36,7 @@ public class SiembraService{
 		empleadoService.validarEmpleadoActivo(bean.getId_empleado());
 		this.validarTipoCultivoExiste(bean.getId_tipo_cultivo());
 		this.validarCantidadSembrada(bean.getCantidad_sembrada());
+		this.validarParcelaNoSembrada(bean.getId_parcela());
 		
 		//PROCESO
 		sql = """
@@ -114,6 +115,16 @@ public class SiembraService{
 		if (cantidad <= 0) {
 			throw new RuntimeException("La cantidad sembrada debe ser mayor a 0.");
 		}
+	}
+	
+	//VALIDAR QUE LA PARCELA NO HA SIDO SEMBRADA ANTES
+	private void validarParcelaNoSembrada(int idParcela){
+	    String sql = "SELECT COUNT(*) FROM HISTORIAL_SIEMBRA WHERE id_parcela = ?";
+	    Integer count = jdbcTemplate.queryForObject(sql, Integer.class, idParcela);
+
+	    if (count != null && count > 0) {
+	        throw new RuntimeException("La parcela con id = " + idParcela + " ya tiene una siembra registrada.");
+	    }
 	}
 
 	//OBTENER LOS DÍAS ESTIMADOS PARA LA COSECHA DE LA PARCELA

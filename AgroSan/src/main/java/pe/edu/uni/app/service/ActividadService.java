@@ -26,7 +26,7 @@ public class ActividadService{
 
 	//PROGRAMAR UNA ACTIVIDAD Y REGISTRARLA EN LA BD
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-	public ActividadProgramadaDto programarActividad(ActividadProgramadaDto bean) {
+	public ActividadProgramadaDto programarActividad(ActividadProgramadaDto bean){
 		//VARIABLES
 		String sql;
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -59,7 +59,7 @@ public class ActividadService{
 	}
 
 	//LISTAR ACTIVIDADES PROGRAMADAS QUE ESTAN PENDIENTES
-	public List<Map<String, Object>> listarActividadesPendientes() {
+	public List<Map<String, Object>> listarActividadesPendientes(){
 		String sql = """
 				SELECT 
 					ap.id_actividad_programada, ap.fecha_programada,
@@ -79,7 +79,7 @@ public class ActividadService{
 	}
 
 	//LISTAR ACTIVIDADES PROGRAMADAS PARA HOY
-	public List<Map<String, Object>> listarActividadesHoy() {
+	public List<Map<String, Object>> listarActividadesHoy(){
 		String sql = """
 				SELECT 
 					ap.id_actividad_programada, ap.fecha_programada,
@@ -99,7 +99,7 @@ public class ActividadService{
 	}
 
 	//LISTAR LAS ACTIVIDADES PROGRAMADAS EN UNA PARCELA
-	public List<Map<String, Object>> listarActividadesPorParcela(int idParcela) {
+	public List<Map<String, Object>> listarActividadesPorParcela(int idParcela){
 		parcelaService.validarParcelaExiste(idParcela);
 		String sql = """
 				SELECT 
@@ -112,7 +112,7 @@ public class ActividadService{
 				JOIN EMPLEADO e ON ap.id_empleado = e.id_empleado
 				JOIN ESTADO_ACTIVIDAD ea ON ap.id_estado_actividad = ea.id_estado_actividad
 				WHERE ap.id_parcela = ?
-				ORDER BY ap.fecha_programada DESC
+				ORDER BY ap.fecha_programada ASC
 				""";
 		return jdbcTemplate.queryForList(sql, idParcela);
 	}
@@ -153,7 +153,7 @@ public class ActividadService{
 	}
 
 	//LISTAR LAS ACTIVIDADES COMPLETADAS POR UN EMPLEADO
-	public List<Map<String, Object>> reporteActividadesPorEmpleado(int idEmpleado) {
+	public List<Map<String, Object>> reporteActividadesPorEmpleado(int idEmpleado){
 		empleadoService.validarEmpleadoExiste(idEmpleado);
 		String sql = """
 				SELECT 
@@ -165,13 +165,13 @@ public class ActividadService{
 				JOIN ACTIVIDAD a ON ap.id_actividad = a.id_actividad
 				WHERE ap.id_empleado = ?
 				GROUP BY a.nombre
-				ORDER BY total_actividades DESC
+				ORDER BY total_actividades ASC
 				""";
 		return jdbcTemplate.queryForList(sql, idEmpleado);
 	}
 
 	//VALIDAR QUE LA ACTIVIDAD EXISTE EN LA BD
-	public void validarActividadExiste(int idActividad) {
+	public void validarActividadExiste(int idActividad){
 		String sql = "SELECT COUNT(1) FROM ACTIVIDAD WHERE id_actividad = ?";
 		int cont = jdbcTemplate.queryForObject(sql, Integer.class, idActividad);
 		if (cont == 0) {
@@ -180,7 +180,7 @@ public class ActividadService{
 	}
 
 	//VALIDAR QUE LA ACTIVIDAD ESTA PROGRAMADA
-	public void validarActividadProgramadaExiste(int idActividadProgramada) {
+	public void validarActividadProgramadaExiste(int idActividadProgramada){
 		String sql = "SELECT COUNT(1) FROM ACTIVIDAD_PROGRAMADA WHERE id_actividad_programada = ?";
 		int cont = jdbcTemplate.queryForObject(sql, Integer.class, idActividadProgramada);
 		if (cont == 0) {
@@ -189,7 +189,7 @@ public class ActividadService{
 	}
 
 	//VALIDAR QUE LA FECHA PROGRAMADA ES CORRECTA
-	public void validarFechaProgramada(String fechaProgramada) {
+	public void validarFechaProgramada(String fechaProgramada){
 		LocalDate fecha = LocalDate.parse(fechaProgramada);
 		LocalDate hoy = LocalDate.now();
 		if (fecha.isBefore(hoy)) {
@@ -198,7 +198,7 @@ public class ActividadService{
 	}
 
 	//VALIDAR EL ESTADO (PENDIENTE) AL PROGRAMAR UNA ACTIVIDAD
-	public void validarEstadoInicial(int idEstadoActividad) {
+	public void validarEstadoInicial(int idEstadoActividad){
 		if (idEstadoActividad != 1) {
 			throw new RuntimeException("El estado inicial de la actividad debe ser 'Pendiente' (1).");
 		}
