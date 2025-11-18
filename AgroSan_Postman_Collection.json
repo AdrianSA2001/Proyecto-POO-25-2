@@ -495,7 +495,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id_actividad\": 2,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"fecha_programada\": \"2025-11-20\",\n  \"id_estado_actividad\": 1\n}"
+							"raw": "{\n  \"id_actividad\": 1,\n  \"id_parcela\": 4,\n  \"id_empleado\": 1,\n  \"fecha_programada\": \"2025-11-18\",\n  \"id_estado_actividad\": 1\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/actividad/programar",

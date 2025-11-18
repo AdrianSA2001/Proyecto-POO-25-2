@@ -37,6 +37,7 @@ public class ActividadService{
 		empleadoService.validarEmpleadoActivo(bean.getId_empleado());
 		this.validarFechaProgramada(bean.getFecha_programada());
 		this.validarEstadoInicial(bean.getId_estado_actividad());
+		this.validarActividadDuplicada(bean.getId_actividad(), bean.getId_parcela(), bean.getFecha_programada());
 		
 		//PROCESO
 		sql = """
@@ -187,7 +188,27 @@ public class ActividadService{
 			throw new RuntimeException("No existe actividad programada con id = " + idActividadProgramada);
 		}
 	}
-
+	
+	//VALIDAR QUE NO HAY UNA PROGRAMACIÓN PREVIA
+	public void validarActividadDuplicada(int idActividad, int idParcela, String fechaProgramada){
+	    String sql = """
+	        SELECT COUNT(1)
+	        FROM ACTIVIDAD_PROGRAMADA
+	        WHERE id_actividad = ?
+	          AND id_parcela = ?
+	          AND fecha_programada = ?
+	    """;
+	    int count = jdbcTemplate.queryForObject(
+	            sql, Integer.class,
+	            idActividad, idParcela, Date.valueOf(fechaProgramada)
+	    );
+	    if (count > 0){
+	        throw new RuntimeException(
+	            "La actividad ya está programada para esta parcela en la fecha " + fechaProgramada
+	        );
+	    }
+	}
+	
 	//VALIDAR QUE LA FECHA PROGRAMADA ES CORRECTA
 	public void validarFechaProgramada(String fechaProgramada){
 		LocalDate fecha = LocalDate.parse(fechaProgramada);

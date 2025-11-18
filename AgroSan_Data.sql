@@ -82,8 +82,8 @@ INSERT INTO STOCK_COSECHA (id_tipo_cultivo, cantidad_disponible, fecha_actualiza
 -- 8. Insertar datos en HISTORIAL_SIEMBRA
 -- ===========================
 INSERT INTO HISTORIAL_SIEMBRA (id_tipo_cultivo, id_parcela, id_empleado, fecha_siembra, cantidad_sembrada) VALUES
-(1, 1, 1, '2025-09-12', 40.0),
-(2, 2, 2, '2025-09-12', 40.0),
+(1, 1, 1, '2025-08-12', 40.0),
+(2, 2, 2, '2025-08-12', 40.0),
 (3, 3, 1, '2025-09-14', 60.0);
 
 -- ===========================
@@ -108,9 +108,14 @@ INSERT INTO INSUMO (nombre, descripcion, unidad_medida, stock_actual, stock_mini
 -- 11. Insertar datos en ACTIVIDAD_PROGRAMADA
 -- ===========================
 INSERT INTO ACTIVIDAD_PROGRAMADA (id_actividad, id_parcela, id_empleado, fecha_programada, id_estado_actividad) VALUES
-(1, 1, 1, '2025-09-05', 3),
-(2, 2, 2, '2025-09-20', 3),
-(3, 1, 1, '2025-10-15', 3);
+(1, 1, 1, '2025-08-12', 3),
+(2, 2, 2, '2025-08-12', 3),
+(3, 3, 1, '2025-09-14', 3);
+(1, 1, 1, '2025-09-15', 3),
+(2, 2, 2, '2025-09-18', 3),
+(1, 1, 1, '2025-10-22', 3),
+(2, 2, 2, '2025-10-25', 3),
+(3, 3, 5, '2025-10-28', 3);
 
 -- ===========================
 -- 12. Insertar datos en USO_INSUMO
