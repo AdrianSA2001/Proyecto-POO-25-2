@@ -39,7 +39,7 @@
 					"response": []
 				},
 				{
-					"name": "Listar a todos los empleados activos",
+					"name": "Listar a empleados activos",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -87,7 +87,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"cantidad_cosechada\": 25.0\n}"
+							"raw": "{\n  \"dni\": \"77331122\",\n  \"contrasena\": \"pass0001\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/empleado/autenticar",
@@ -205,7 +205,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 2,\n  \"id_empleado\": 1,\n  \"cantidad_sembrada\": 30.0\n}"
+							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 3,\n  \"id_empleado\": 1,\n  \"cantidad_sembrada\": 30.0\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/siembra/registrar",
@@ -244,14 +244,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/siembra/parcela/6",
+							"raw": "{{base_url}}/siembra/parcela/3",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"siembra",
 								"parcela",
-								"6"
+								"3"
 							]
 						}
 					},
@@ -308,7 +308,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Reporte de Rendimiento",
+					"name": "Reporte de rendimiento",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -327,7 +327,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Comparar Siembra vs Cosecha",
+					"name": "Comparar siembra vs cosecha",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -390,7 +390,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id_comprador\": 1,\n  \"id_tipo_cultivo\": 1,\n  \"cantidad_vendida\": 15.0,\n  \"precio_unitario\": 3.5\n}"
+							"raw": "{\n  \"id_comprador\": 1,\n  \"id_tipo_cultivo\": 1,\n  \"cantidad_vendida\": 100.0,\n  \"precio_unitario\": 3.5\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/venta/registrar",
@@ -571,7 +571,7 @@
 			"name": "7. RF3 - ALERTAS (Recordatorios)",
 			"item": [
 				{
-					"name": "✅ Ver Resumen de Alertas",
+					"name": "Resumen de las alertas",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -589,7 +589,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Ver Todas las Alertas Activas",
+					"name": "Ver todas las alertas activas",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -607,7 +607,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Alertas de Cosecha Próxima",
+					"name": "Alerta de cosecha próxima",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -625,7 +625,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Alertas de Actividades Hoy",
+					"name": "Alerta actividades para hoy",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -643,7 +643,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Alertas de Stock Bajo",
+					"name": "Alerta de stock bajo",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -661,7 +661,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Alertas por Prioridad ALTA",
+					"name": "Alertas filtradas por prioridad alta",
 					"request": {
 						"method": "GET",
 						"header": [],

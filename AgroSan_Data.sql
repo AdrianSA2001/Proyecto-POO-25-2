@@ -72,8 +72,8 @@ INSERT INTO STOCK_SEMILLAS (id_tipo_cultivo, cantidad_disponible, fecha_actualiz
 -- 7. Insertar datos en STOCK_COSECHA
 -- ===========================
 INSERT INTO STOCK_COSECHA (id_tipo_cultivo, cantidad_disponible, fecha_actualizacion) VALUES
-(1, 180.0, '2025-10-22'),
-(2, 75.0, '2025-10-25'),
+(1, 150.0, '2025-10-30'),
+(2, 45.0, '2025-10-30'),
 (3, 120.0, '2025-10-28'),
 (4, 0.0, '2025-10-01'),
 (5, 0.0, '2025-10-01');
@@ -128,6 +128,6 @@ INSERT INTO COMPRADOR (nombre, telefono, email, direccion) VALUES
 ('Mercado Central', '988444222', 'contacto@mercadocentral.com', 'Jr. Comercio 456');
 
 INSERT INTO VENTA (id_comprador, id_tipo_cultivo, fecha_venta, cantidad_vendida, precio_unitario) VALUES
-(1, 1, '2025-10-20', 20.0, 3.50),
-(2, 2, '2025-10-22', 30.0, 2.80);
+(1, 1, '2025-10-30', 30.0, 3.50),
+(2, 2, '2025-10-30', 30.0, 3.00);
 GO

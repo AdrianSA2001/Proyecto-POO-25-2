@@ -132,6 +132,8 @@ public class VentaService{
 		if (bean.getNombre() == null || bean.getNombre().trim().isEmpty()) {
 			throw new RuntimeException("El nombre del comprador es obligatorio.");
 		}
+		this.validarTelefono(bean.getTelefono());
+		this.validarEmail(bean.getEmail());
 
 		//PROCESO
 		sql = """
@@ -170,7 +172,31 @@ public class VentaService{
 			throw new RuntimeException("No existe comprador con id = " + idComprador);
 		}
 	}
+	
+	//VALIDAR EL TELÉFONO
+	public void validarTelefono(String telefono){
+		if (telefono == null || telefono.trim().isEmpty()) {
+			throw new RuntimeException("El teléfono es obligatorio.");
+		}
+		if (!telefono.matches("\\d{9}")) {
+			throw new RuntimeException("El teléfono debe tener exactamente 9 dígitos.");
+		}
+	}
+	
+	//VALIDAR FORMATO EMAIL
+	public void validarEmail(String email){
+		if (email == null || email.trim().isEmpty()) {
+			throw new RuntimeException("El email es obligatorio.");
+		}
 
+		// Regex común y segura para formato de email
+		String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+
+		if (!email.matches(regex)) {
+			throw new RuntimeException("El email ingresado no tiene un formato válido.");
+		}
+	}
+	
 	//VALIDAR QUE EL CULTIVO A VENDER EXISTE EN LA BD
 	public void validarTipoCultivoExiste(int idTipoCultivo){
 		String sql = "SELECT COUNT(1) FROM TIPO_CULTIVO WHERE id_tipo_cultivo = ?";
