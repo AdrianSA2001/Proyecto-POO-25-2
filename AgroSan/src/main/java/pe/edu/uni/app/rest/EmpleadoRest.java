@@ -80,10 +80,56 @@ public class EmpleadoRest{
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 		}
 	}
-
-	/**
-	 * Autenticar empleado (login)
-	 */
+	
+	//LISTAR A LOS EMPLEADOS DE VACACIONES
+	@GetMapping("/vacaciones")
+	public ResponseEntity<?> listarEmpleadosDeVacaciones(HttpServletRequest request){
+		try {
+			List<Map<String, Object>> resultado = empleadoService.listarEmpleadosDeVacaciones();
+			return ResponseEntity.ok(resultado);
+		} catch (Exception e){
+			ErrorResponse error = new ErrorResponse(
+					e.getMessage(),
+					LocalDateTime.now().toString(),
+					request.getRequestURI()
+			);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+		}
+	}
+	
+	//LISTAR A LOS EMPLEADOS RETIRADOS
+	@GetMapping("/retirados")
+	public ResponseEntity<?> listarEmpleadosRetirados(HttpServletRequest request){
+		try {
+			List<Map<String, Object>> resultado = empleadoService.listarEmpleadosRetirados();
+			return ResponseEntity.ok(resultado);
+		} catch (Exception e){
+			ErrorResponse error = new ErrorResponse(
+					e.getMessage(),
+					LocalDateTime.now().toString(),
+					request.getRequestURI()
+			);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+		}
+	}
+	
+	//LISTAR EMPLEADOS DESPEDIDOS
+	@GetMapping("/despedidos")
+	public ResponseEntity<?> listarEmpleadosDespedidos(HttpServletRequest request){
+		try {
+			List<Map<String, Object>> resultado = empleadoService.listarEmpleadosDespedidos();
+			return ResponseEntity.ok(resultado);
+		} catch (Exception e){
+			ErrorResponse error = new ErrorResponse(
+					e.getMessage(),
+					LocalDateTime.now().toString(),
+					request.getRequestURI()
+			);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+		}
+	}
+	
+	//AUTENTICAR A UN EMPLEADO
 	@PostMapping("/autenticar")
 	public ResponseEntity<?> autenticar(@RequestBody Map<String, String> credenciales, HttpServletRequest request){
 		try {

@@ -32,11 +32,11 @@ public class SiembraService{
 		LocalDate fechaSiembra = LocalDate.now();
 
 		//VALIDACIONES
-		parcelaService.validarParcelaActiva(bean.getId_parcela());
-		empleadoService.validarEmpleadoActivo(bean.getId_empleado());
 		this.validarTipoCultivoExiste(bean.getId_tipo_cultivo());
-		this.validarCantidadSembrada(bean.getCantidad_sembrada());
+		parcelaService.validarParcelaInactiva(bean.getId_parcela());
 		this.validarParcelaNoSembrada(bean.getId_parcela());
+		empleadoService.validarEmpleadoActivo(bean.getId_empleado());
+		this.validarCantidadSembrada(bean.getCantidad_sembrada());
 		
 		//PROCESO
 		sql = """
@@ -60,6 +60,7 @@ public class SiembraService{
 		LocalDate fechaEstimadaCosecha = fechaSiembra.plusDays(diasCosecha);
 		bean.setFecha_estimada_cosecha(fechaEstimadaCosecha.toString());
 		this.actualizarStockSemillas(bean.getId_tipo_cultivo(), bean.getCantidad_sembrada());
+		parcelaService.cambiarEstadoParcela(bean.getId_parcela(), 2);
 		return bean;
 	}
 	
@@ -122,13 +123,13 @@ public class SiembraService{
 	    String sql = "SELECT COUNT(*) FROM HISTORIAL_SIEMBRA WHERE id_parcela = ?";
 	    Integer count = jdbcTemplate.queryForObject(sql, Integer.class, idParcela);
 
-	    if (count != null && count > 0) {
+	    if (count != null && count > 0){
 	        throw new RuntimeException("La parcela con id = " + idParcela + " ya tiene una siembra registrada.");
 	    }
 	}
 
 	//OBTENER LOS DÍAS ESTIMADOS PARA LA COSECHA DE LA PARCELA
-	private int obtenerDiasCosechaPorTipo(int idTipoCultivo) {
+	private int obtenerDiasCosechaPorTipo(int idTipoCultivo){
 		String sql = "SELECT tipo FROM TIPO_CULTIVO WHERE id_tipo_cultivo = ?";
 		String tipo = jdbcTemplate.queryForObject(sql, String.class, idTipoCultivo);
 		return switch (tipo.toLowerCase()) {
@@ -140,7 +141,7 @@ public class SiembraService{
 	}
 	
 	//ACTUALIZAR EL STOCK DE SEMILLAS AL SEMBRAR
-	private void actualizarStockSemillas(int idTipoCultivo, double cantidadSembrada) {
+	private void actualizarStockSemillas(int idTipoCultivo, double cantidadSembrada){
 		String sql = """
 				UPDATE STOCK_SEMILLAS 
 				SET cantidad_disponible = cantidad_disponible - ?,
@@ -151,7 +152,7 @@ public class SiembraService{
 	}
 	
 	//VERIFICAR QUE HAY STOCK SUFICIENTE DE SEMILLAS
-	public boolean hayStockSuficiente(int idTipoCultivo, double cantidadNecesaria) {
+	public boolean hayStockSuficiente(int idTipoCultivo, double cantidadNecesaria){
 		String sql = "SELECT cantidad_disponible FROM STOCK_SEMILLAS WHERE id_tipo_cultivo = ?";
 		Double stockActual = jdbcTemplate.queryForObject(sql, Double.class, idTipoCultivo);
 		return stockActual != null && stockActual >= cantidadNecesaria;

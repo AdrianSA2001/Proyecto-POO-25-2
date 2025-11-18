@@ -25,6 +25,7 @@ public class ParcelaService{
 		
 		//VALIDACIONES
 		this.validarArea(bean.getArea());
+		this.validarEstadoParcela(bean.getId_estado_parcela());
 		this.validarEstadoInicial(bean.getId_estado_parcela());
 		
 		//PROCESO
@@ -107,6 +108,16 @@ public class ParcelaService{
 		}
 	}
 	
+	//VALIDAR QUE EL ESTADO DE LA PARCELA SEA VÁLIDO
+	public void validarEstadoParcela(int id_estado_parcela){
+		if (id_estado_parcela < 1){
+			throw new RuntimeException("El 'id_estado_parcela' no puede ser menor que 1.");
+		}
+		if (id_estado_parcela > 2){
+			throw new RuntimeException("El 'id_estado_parcela' ingresado no existe, solo se permiten los valores 1 y 2.");
+		}
+	}
+	
 	//VALIDAR QUE LA PARCELA ESTE INACTIVA AL REGISTRARSE
 	public void validarEstadoInicial(int idEstadoParcela){
 		if (idEstadoParcela != 1) {
@@ -124,12 +135,12 @@ public class ParcelaService{
 	}
 	
 	//VALIDAR QUE LA PARCELA ESTÁ ACTIVA
-	public void validarParcelaActiva(int idParcela){
+	public void validarParcelaInactiva(int idParcela){
 		this.validarParcelaExiste(idParcela);
 		String sql = "SELECT id_estado_parcela FROM PARCELA WHERE id_parcela = ?";
 		int estado = jdbcTemplate.queryForObject(sql, Integer.class, idParcela);
-		if (estado != 2){
-			throw new RuntimeException("La parcela debe estar en estado 'Activa' (2) para poder sembrar.");
+		if (estado != 1){
+			throw new RuntimeException("La parcela debe estar en estado 'Inactiva' (1) para poder sembrar.");
 		}
 	}
 	

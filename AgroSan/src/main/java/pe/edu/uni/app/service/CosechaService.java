@@ -80,7 +80,7 @@ public class CosechaService{
 				JOIN TIPO_CULTIVO tc ON hc.id_tipo_cultivo = tc.id_tipo_cultivo
 				JOIN PARCELA p ON hc.id_parcela = p.id_parcela
 				JOIN EMPLEADO e ON hc.id_empleado = e.id_empleado
-				ORDER BY hc.fecha_cosecha DESC
+				ORDER BY hc.fecha_cosecha ASC
 				""";
 		return jdbcTemplate.queryForList(sql);
 	}
@@ -97,7 +97,7 @@ public class CosechaService{
 				JOIN TIPO_CULTIVO tc ON hc.id_tipo_cultivo = tc.id_tipo_cultivo
 				JOIN EMPLEADO e ON hc.id_empleado = e.id_empleado
 				WHERE hc.id_parcela = ?
-				ORDER BY hc.fecha_cosecha DESC
+				ORDER BY hc.fecha_cosecha ASC
 				""";
 		return jdbcTemplate.queryForList(sql, idParcela);
 	}
@@ -113,7 +113,7 @@ public class CosechaService{
 				FROM HISTORIAL_COSECHA hc
 				JOIN TIPO_CULTIVO tc ON hc.id_tipo_cultivo = tc.id_tipo_cultivo
 				GROUP BY tc.nombre
-				ORDER BY total_cosechado DESC
+				ORDER BY total_cosechado ASC
 				""";
 		return jdbcTemplate.queryForList(sql);
 	}

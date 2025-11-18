@@ -31,6 +31,7 @@ public class EmpleadoService{
 		if (bean.getEmail() != null && !bean.getEmail().isEmpty()) {
 			this.validarEmailUnico(bean.getEmail());
 		}
+		this.validarEstadoEmpleado(Integer.parseInt(bean.getId_estado_empleado()));
 		this.validarEstadoInicial(bean.getId_estado_empleado());
 		
 		//PROCESO
@@ -84,7 +85,7 @@ public class EmpleadoService{
 		return jdbcTemplate.queryForList(sql);
 	}
 	
-	//LISTAR A LOS EMPLEADOS ACTIVOS
+	//LISTAR A LOS EMPLEADOS QUE ESTAN ACTIVOS
 	public List<Map<String, Object>> listarEmpleadosActivos(){
 		String sql = """
 				SELECT 
@@ -93,9 +94,61 @@ public class EmpleadoService{
 				WHERE e.id_estado_empleado = '1'
 				ORDER BY e.apellido, e.nombre
 				""";
-		return jdbcTemplate.queryForList(sql);
+		List<Map<String, Object>> resultado = jdbcTemplate.queryForList(sql);
+		if (resultado.isEmpty()){
+			throw new RuntimeException("No hay empleados activos.");
+		}
+		return resultado;
 	}
 	
+	//LISTAR A LOS EMPLEADOS QUE ESTAN DE VACACIONES
+	public List<Map<String, Object>> listarEmpleadosDeVacaciones(){
+		String sql = """
+				SELECT 
+					e.id_empleado, e.nombre, e.apellido, e.telefono, e.email
+				FROM EMPLEADO e
+				WHERE e.id_estado_empleado = '2'
+				ORDER BY e.apellido, e.nombre
+				""";
+		List<Map<String, Object>> resultado = jdbcTemplate.queryForList(sql);
+		if (resultado.isEmpty()){
+			throw new RuntimeException("No hay empleados de vacaciones.");
+		}
+		return resultado;
+	}
+	
+	//LISTAR A LOS EMPLEADOS QUE FUERON RETIRADOS (RENUNCIARON)
+	public List<Map<String, Object>> listarEmpleadosRetirados(){
+		String sql = """
+				SELECT 
+					e.id_empleado, e.nombre, e.apellido, e.telefono, e.email
+				FROM EMPLEADO e
+				WHERE e.id_estado_empleado = '3'
+				ORDER BY e.apellido, e.nombre
+				""";
+		List<Map<String, Object>> resultado = jdbcTemplate.queryForList(sql);
+		if (resultado.isEmpty()){
+			throw new RuntimeException("No hay empleados retirados.");
+		}
+		return resultado;
+	}
+	
+	//LISTAR EMPLEADOS QUE FUERON DESPEDIDOS
+	public List<Map<String, Object>> listarEmpleadosDespedidos(){
+		String sql = """
+				SELECT 
+					e.id_empleado, e.nombre, e.apellido, e.telefono, e.email
+				FROM EMPLEADO e
+				WHERE e.id_estado_empleado = '4'
+				ORDER BY e.apellido, e.nombre
+				""";
+		List<Map<String, Object>> resultado = jdbcTemplate.queryForList(sql);
+		if (resultado.isEmpty()){
+			throw new RuntimeException("No hay empleados despedidos.");
+		}
+		return resultado;
+	}
+		
 	//AUTENTICAR EMPLEADO (LOGIN)
 	public Map<String, Object> autenticar(String dni, String contrasena){
 		String sql = """
@@ -148,6 +201,16 @@ public class EmpleadoService{
 		if (cont > 0) {
 			throw new RuntimeException("Ya existe un empleado registrado con email: " + email);
 		}
+	}
+	
+	//VALIDAR QUE EL ESTADO SEA VÁLIDO
+	public void validarEstadoEmpleado(int id_estado_empleado){
+	    if (id_estado_empleado < 1){
+	        throw new RuntimeException("El 'id_estado_empleado' no puede ser menor que 1.");
+	    }
+	    if (id_estado_empleado > 4){
+	        throw new RuntimeException("El 'id_estado_empleado' ingresado no existe, solo se permiten valores entre 1 y 4.");
+	    }
 	}
 	
 	//VALIDAR QUE EL ESTADO INICIAL SEA ACTIVO

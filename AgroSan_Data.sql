@@ -23,19 +23,22 @@ INSERT INTO ESTADO_ACTIVIDAD (descripcion) VALUES
 -- 2. Insertar datos en PARCELA
 -- ===========================
 INSERT INTO PARCELA (ubicacion, area, id_estado_parcela) VALUES
-('Zona A', 100.0, 2),
-('Zona B', 100.0, 2),
 ('Zona A', 120.0, 2),
-('Zona C', 120.0, 2),
-('Zona D', 150.0, 2);
+('Zona A', 150.0, 2),
+('Zona B', 100.0, 2),
+('Zona C', 150.0, 1),
+('Zona C', 120.0, 1),
+('Zona A', 180.0, 1);
 
 -- ===========================
 -- 3. Insertar datos en EMPLEADO
 -- ===========================
 INSERT INTO EMPLEADO (nombre, apellido, telefono, email, dni, contraseña, id_estado_empleado) VALUES
-('Juan', 'Pérez', '999888777', 'juanperez@example.com', '12345678', '1234', 1),
-('María', 'López', '987654321', 'marialopez@example.com', '87654321', 'abcd', 1),
-('Carlos', 'Gómez', '998877665', 'carlosgomez@example.com', '11223344', 'pass', 2);
+('Camila', 'Rivera', '998877665', 'cami2002@gmail.com', '77331122', 'pass0001', 1),
+('Rafaella', 'Loayza', '987654321', 'rafaellatkm01@gmail.com', '75318642', 'pass0002', 1),
+('Diego', 'Lulo', '991456230', 'diegopaladin2025@gmail.com', '89820661', 'pass0003', 3),
+('Luis', 'Barrantes', '920135006', 'barraluisasd@gmail.com', '65721143', 'pass0004', 4),
+('Sebastian', 'Paredes', '999666321', 'bastianredes1998@gmail.com', '63314577', 'pass0005', 1);
 
 -- ===========================
 -- 4. Insertar datos en ACTIVIDAD
@@ -49,11 +52,11 @@ INSERT INTO ACTIVIDAD (nombre, descripcion) VALUES
 -- 5. Insertar datos en TIPO_CULTIVO
 -- ===========================
 INSERT INTO TIPO_CULTIVO (nombre, tipo) VALUES
-('Tomate', 'Hortaliza'),
-('Lechuga', 'Hortaliza'),
-('Zanahoria', 'Hortaliza'),
+('Tomate', 'Fruta'),
+('Alcachofa', 'Hortaliza'),
+('Arandano', 'Fruta'),
 ('Fresa', 'Fruta'),
-('Maíz Choclo', 'Cereal');
+('Choclo', 'Cereal');
 
 -- ===========================
 -- 6. Insertar datos en STOCK_SEMILLAS
@@ -69,31 +72,29 @@ INSERT INTO STOCK_SEMILLAS (id_tipo_cultivo, cantidad_disponible, fecha_actualiz
 -- 7. Insertar datos en STOCK_COSECHA
 -- ===========================
 INSERT INTO STOCK_COSECHA (id_tipo_cultivo, cantidad_disponible, fecha_actualizacion) VALUES
-(1, 50.0, '2025-10-20'),
-(2, 80.0, '2025-10-22'),
-(3, 30.0, '2025-10-25'),
-(4, 60.0, '2025-10-27'),
-(5, 90.0, '2025-10-30');
+(1, 180.0, '2025-10-22'),
+(2, 75.0, '2025-10-25'),
+(3, 120.0, '2025-10-28'),
+(4, 0.0, '2025-10-01'),
+(5, 0.0, '2025-10-01');
 
 -- ===========================
 -- 8. Insertar datos en HISTORIAL_SIEMBRA
 -- ===========================
 INSERT INTO HISTORIAL_SIEMBRA (id_tipo_cultivo, id_parcela, id_empleado, fecha_siembra, cantidad_sembrada) VALUES
-(1, 1, 1, '2025-09-10', 50.0),
-(2, 2, 2, '2025-09-12', 60.0),
-(3, 3, 1, '2025-09-15', 40.0),
-(4, 4, 2, '2025-09-18', 55.0),
-(5, 5, 3, '2025-09-20', 70.0);
+(1, 1, 1, '2025-09-12', 40.0),
+(2, 2, 2, '2025-09-12', 40.0),
+(3, 3, 1, '2025-09-14', 60.0);
 
 -- ===========================
 -- 9. Insertar datos en HISTORIAL_COSECHA
 -- ===========================
 INSERT INTO HISTORIAL_COSECHA (id_tipo_cultivo, id_parcela, id_empleado, fecha_cosecha, cantidad_cosechada) VALUES
-(1, 1, 1, '2025-10-15', 30.0),
-(2, 2, 2, '2025-10-18', 40.0),
-(3, 3, 1, '2025-10-22', 25.0),
-(4, 4, 2, '2025-10-25', 45.0),
-(5, 5, 3, '2025-10-28', 60.0);
+(1, 1, 1, '2025-09-15', 80.0),
+(2, 2, 2, '2025-09-18', 40.0),
+(1, 1, 1, '2025-10-22', 100.0),
+(2, 2, 2, '2025-10-25', 35.0),
+(3, 3, 5, '2025-10-28', 120.0);
 
 -- ===========================
 -- 10. Insertar datos en INSUMO
