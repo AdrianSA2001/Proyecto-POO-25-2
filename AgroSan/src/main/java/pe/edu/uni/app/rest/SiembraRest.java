@@ -53,14 +53,6 @@ public class SiembraRest{
 	public ResponseEntity<?> listarSiembrasPorParcela(@PathVariable int idParcela, HttpServletRequest request){
 		try {
 			List<Map<String, Object>> resultado = siembraService.listarSiembrasPorParcela(idParcela);
-			if (resultado.isEmpty()){
-	            ErrorResponse error = new ErrorResponse(
-	                "No hay siembras registradas para esta parcela.",
-	                LocalDateTime.now().toString(),
-	                request.getRequestURI()
-	            );
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-	        }
 			return ResponseEntity.ok(resultado);
 		} catch (Exception e){
 			ErrorResponse error = new ErrorResponse(

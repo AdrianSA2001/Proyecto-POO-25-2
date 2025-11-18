@@ -236,7 +236,7 @@
 			"name": "4. RF4 - COSECHA (Registrar y Rendimiento)",
 			"item": [
 				{
-					"name": "✅ SUCCESS - Registrar Cosecha",
+					"name": "Registrar una cosecha",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -263,61 +263,7 @@
 					"response": []
 				},
 				{
-					"name": "❌ ERROR - Cosecha sin Siembra Previa",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id_tipo_cultivo\": 3,\n  \"id_parcela\": 5,\n  \"id_empleado\": 1,\n  \"cantidad_cosechada\": 25.0\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/cosecha/registrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"cosecha",
-								"registrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "❌ ERROR - Cantidad Cosechada = 0",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"cantidad_cosechada\": 0\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/cosecha/registrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"cosecha",
-								"registrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "✅ Listar Cosechas",
+					"name": "Listar todas las cosechas",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -378,7 +324,7 @@
 			"name": "5. RF5 - VENTAS (Control Distribución)",
 			"item": [
 				{
-					"name": "✅ SUCCESS - Registrar Comprador",
+					"name": "Registrar un nuevo comprador",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -406,7 +352,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ SUCCESS - Registrar Venta",
+					"name": "Registrar una nueva venta",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -433,88 +379,7 @@
 					"response": []
 				},
 				{
-					"name": "❌ ERROR - Venta sin Stock Suficiente",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id_comprador\": 1,\n  \"id_tipo_cultivo\": 1,\n  \"cantidad_vendida\": 9999.0,\n  \"precio_unitario\": 3.5\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/venta/registrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"venta",
-								"registrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "❌ ERROR - Venta con Comprador Inexistente",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id_comprador\": 999,\n  \"id_tipo_cultivo\": 1,\n  \"cantidad_vendida\": 10.0,\n  \"precio_unitario\": 3.5\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/venta/registrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"venta",
-								"registrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "❌ ERROR - Precio Unitario Negativo",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id_comprador\": 1,\n  \"id_tipo_cultivo\": 1,\n  \"cantidad_vendida\": 10.0,\n  \"precio_unitario\": -5.0\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/venta/registrar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"venta",
-								"registrar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "✅ Consultar Stock Disponible",
+					"name": "Consultar el stock disponible",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -532,7 +397,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Reporte de Ventas por Cultivo",
+					"name": "Reporte de ventas por cultivo",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -551,7 +416,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Listar Ventas",
+					"name": "Listar las ventas",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -574,7 +439,7 @@
 			"name": "6. RF2 - ACTIVIDADES (Calendarización)",
 			"item": [
 				{
-					"name": "✅ Listar Tipos de Actividades",
+					"name": "Listar catálogo de actividades",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -592,7 +457,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ SUCCESS - Programar Actividad",
+					"name": "Programar una actividad",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -619,61 +484,7 @@
 					"response": []
 				},
 				{
-					"name": "❌ ERROR - Fecha Pasada",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id_actividad\": 2,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"fecha_programada\": \"2020-01-01\",\n  \"id_estado_actividad\": 1\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/actividad/programar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"actividad",
-								"programar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "❌ ERROR - Estado Inicial Incorrecto",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id_actividad\": 2,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"fecha_programada\": \"2025-11-20\",\n  \"id_estado_actividad\": 3\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/actividad/programar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"actividad",
-								"programar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "✅ Listar Actividades Pendientes",
+					"name": "Listar las actividades pendientes",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -691,7 +502,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Listar Actividades de Hoy",
+					"name": "Listar las actividades programadas para hoy",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -709,7 +520,7 @@
 					"response": []
 				},
 				{
-					"name": "✅ Completar Actividad",
+					"name": "Completar una actividad",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -722,25 +533,6 @@
 								"actividad",
 								"completar",
 								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "❌ ERROR - Completar Actividad Inexistente",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/actividad/completar/999",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"actividad",
-								"completar",
-								"999"
 							]
 						}
 					},

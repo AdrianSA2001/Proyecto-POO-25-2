@@ -93,7 +93,11 @@ public class SiembraService{
 				WHERE hs.id_parcela = ?
 				ORDER BY hs.fecha_siembra DESC
 				""";
-		return jdbcTemplate.queryForList(sql, idParcela);
+		List<Map<String, Object>> resultado = jdbcTemplate.queryForList(sql, idParcela);
+		if (resultado.isEmpty()) {
+	        throw new RuntimeException("La parcela con id = " + idParcela + " no tiene siembras registradas.");
+	    }
+		return resultado;
 	}
 	
 	//VALIDAR QUE EL CULTIVO A SEMBRAR EXISTE

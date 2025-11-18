@@ -68,7 +68,7 @@ public class VentaService{
 				FROM VENTA v
 				JOIN COMPRADOR c ON v.id_comprador = c.id_comprador
 				JOIN TIPO_CULTIVO tc ON v.id_tipo_cultivo = tc.id_tipo_cultivo
-				ORDER BY v.fecha_venta DESC
+				ORDER BY v.fecha_venta ASC
 				""";
 		return jdbcTemplate.queryForList(sql);
 	}
@@ -84,7 +84,7 @@ public class VentaService{
 				FROM VENTA v
 				JOIN TIPO_CULTIVO tc ON v.id_tipo_cultivo = tc.id_tipo_cultivo
 				WHERE v.id_comprador = ?
-				ORDER BY v.fecha_venta DESC
+				ORDER BY v.fecha_venta ASC
 				""";
 		return jdbcTemplate.queryForList(sql, idComprador);
 	}
@@ -101,7 +101,7 @@ public class VentaService{
 				FROM VENTA v
 				JOIN TIPO_CULTIVO tc ON v.id_tipo_cultivo = tc.id_tipo_cultivo
 				GROUP BY tc.nombre
-				ORDER BY ingresos_totales DESC
+				ORDER BY ingresos_totales ASC
 				""";
 		return jdbcTemplate.queryForList(sql);
 	}
