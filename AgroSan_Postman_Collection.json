@@ -57,6 +57,60 @@
 					"response": []
 				},
 				{
+					"name": "Listar a empleados de vacaciones",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/empleado/vacaciones",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"empleado",
+								"vacaciones"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar a empleados retirados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/empleado/retirados",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"empleado",
+								"retirados"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar a empleados despedidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/empleado/despedidos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"empleado",
+								"despedidos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Listar a un empleado por su ID",
 					"request": {
 						"method": "GET",
