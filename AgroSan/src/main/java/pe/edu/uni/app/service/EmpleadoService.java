@@ -27,6 +27,7 @@ public class EmpleadoService{
 		this.validarDni(bean.getDni());
 		this.validarDniUnico(bean.getDni());
 		this.validarTelefono(bean.getTelefono());
+		this.validarTelefonoUnico(bean.getTelefono());
 		this.validarEmail(bean.getEmail());
 		if (bean.getEmail() != null && !bean.getEmail().isEmpty()) {
 			this.validarEmailUnico(bean.getEmail());
@@ -200,6 +201,15 @@ public class EmpleadoService{
 		int cont = jdbcTemplate.queryForObject(sql, Integer.class, email);
 		if (cont > 0) {
 			throw new RuntimeException("Ya existe un empleado registrado con email: " + email);
+		}
+	}
+	
+	//VALIDAR QUE EL TELEFONO SEA ÚNICO
+	public void validarTelefonoUnico(String telefono){
+		String sql = "SELECT COUNT(1) FROM EMPLEADO WHERE telefono = ?";
+		int cont = jdbcTemplate.queryForObject(sql, Integer.class, telefono);
+		if (cont > 0) {
+			throw new RuntimeException("Ya existe un empleado registrado con el teléfono: " + telefono);
 		}
 	}
 	

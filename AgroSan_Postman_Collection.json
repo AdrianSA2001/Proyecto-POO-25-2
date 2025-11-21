@@ -23,7 +23,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"nombre\": \"Pedro\",\n  \"apellido\": \"García\",\n  \"telefono\": \"987654321\",\n  \"email\": \"pedro@agrosan.com\",\n  \"dni\": \"99887766\",\n  \"contrasena\": \"pass123\",\n  \"id_estado_empleado\": \"1\"\n}"
+							"raw": "{\n  \"nombre\": \"Pedro\",\n  \"apellido\": \"García\",\n  \"telefono\": \"987654321\",\n  \"email\": \"pedro@gmail.com\",\n  \"dni\": \"99887766\",\n  \"contrasena\": \"pass0123\",\n  \"id_estado_empleado\": \"1\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/empleado/registrar",
