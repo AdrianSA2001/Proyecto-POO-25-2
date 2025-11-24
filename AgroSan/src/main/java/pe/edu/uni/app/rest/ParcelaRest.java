@@ -3,6 +3,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.uni.app.dto.ErrorResponse;
 import pe.edu.uni.app.dto.ParcelaDto;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 @RestController
+@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"})
 @RequestMapping("/agrosan/parcela")
 public class ParcelaRest{
 	@Autowired
