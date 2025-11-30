@@ -19,6 +19,11 @@ INSERT INTO ESTADO_ACTIVIDAD (descripcion) VALUES
 ('En curso'),
 ('Finalizada');
 
+INSERT INTO ROL_EMPLEADO (descripcion) VALUES
+('Jefe'),
+('Vendedor'),
+('Granjero');
+
 -- ===========================
 -- 2. Insertar datos en PARCELA
 -- ===========================
@@ -33,12 +38,12 @@ INSERT INTO PARCELA (ubicacion, area, id_estado_parcela) VALUES
 -- ===========================
 -- 3. Insertar datos en EMPLEADO
 -- ===========================
-INSERT INTO EMPLEADO (nombre, apellido, telefono, email, dni, contraseña, id_estado_empleado) VALUES
-('Camila', 'Rivera', '998877665', 'cami2002@gmail.com', '77331122', 'pass0001', 1),
-('Rafaella', 'Loayza', '987654321', 'rafaellatkm01@gmail.com', '75318642', 'pass0002', 1),
-('Diego', 'Lulo', '991456230', 'diegopaladin2025@gmail.com', '89820661', 'pass0003', 3),
-('Luis', 'Barrantes', '920135006', 'barraluisasd@gmail.com', '65721143', 'pass0004', 4),
-('Sebastian', 'Paredes', '999666321', 'bastianredes1998@gmail.com', '63314577', 'pass0005', 1);
+INSERT INTO EMPLEADO (nombre, apellido, telefono, email, dni, contraseña, id_estado_empleado, id_rol_empleado) VALUES
+('Camila', 'Rivera', '998877665', 'cami2002@gmail.com', '77331122', 'pass0001', 1, 1),
+('Rafaella', 'Loayza', '987654321', 'rafaellatkm01@gmail.com', '75318642', 'pass0002', 1, 2),
+('Diego', 'Lulo', '991456230', 'diegopaladin2025@gmail.com', '89820661', 'pass0003', 3, 2),
+('Luis', 'Barrantes', '920135006', 'barraluisasd@gmail.com', '65721143', 'pass0004', 4, 2),
+('Sebastian', 'Paredes', '999666321', 'bastianredes1998@gmail.com', '63314577', 'pass0005', 1, 3);
 
 -- ===========================
 -- 4. Insertar datos en ACTIVIDAD
@@ -97,14 +102,6 @@ INSERT INTO HISTORIAL_COSECHA (id_tipo_cultivo, id_parcela, id_empleado, fecha_c
 (3, 3, 5, '2025-10-28', 120.0);
 
 -- ===========================
--- 10. Insertar datos en INSUMO
--- ===========================
-INSERT INTO INSUMO (nombre, descripcion, unidad_medida, stock_actual, stock_minimo) VALUES
-('Fertilizante NPK', 'Fertilizante balanceado para cultivos', 'kg', 500, 100),
-('Pesticida X', 'Control de plagas de hoja', 'L', 200, 50),
-('Herbicida Y', 'Eliminación de malezas', 'L', 150, 30);
-
--- ===========================
 -- 11. Insertar datos en ACTIVIDAD_PROGRAMADA
 -- ===========================
 INSERT INTO ACTIVIDAD_PROGRAMADA (id_actividad, id_parcela, id_empleado, fecha_programada, id_estado_actividad) VALUES
@@ -116,14 +113,6 @@ INSERT INTO ACTIVIDAD_PROGRAMADA (id_actividad, id_parcela, id_empleado, fecha_p
 (3, 1, 1, '2025-10-22', 3),
 (3, 2, 2, '2025-10-25', 3),
 (3, 3, 5, '2025-10-28', 3);
-
--- ===========================
--- 12. Insertar datos en USO_INSUMO
--- ===========================
-INSERT INTO USO_INSUMO (id_actividad_programada, id_insumo, cantidad_usada) VALUES
-(1, 1, 10.5),
-(2, 2, 3.0),
-(3, 3, 5.0);
 
 -- ===========================
 -- 13. Insertar datos en COMPRADOR y VENTA
