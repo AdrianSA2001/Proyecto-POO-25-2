@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.uni.app.dto.ActividadProgramadaDto;
+import pe.edu.uni.app.dto.CosechaDto;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
@@ -23,6 +24,9 @@ public class ActividadService{
 
 	@Autowired
 	private EmpleadoService empleadoService;
+	
+	@Autowired
+	private CosechaService cosechaService;
 
 	//PROGRAMAR UNA ACTIVIDAD Y REGISTRARLA EN LA BD
 	@Transactional(rollbackFor = Exception.class)
@@ -117,21 +121,42 @@ public class ActividadService{
 				""";
 		return jdbcTemplate.queryForList(sql, idParcela);
 	}
-
-	//CAMBIAR EL ESTADO DE LA ACTIVIDAD A COMPLETADA
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-	public void completarActividad(int idActividadProgramada){
-		this.validarActividadProgramadaExiste(idActividadProgramada);
-		String sql = """
-				UPDATE ACTIVIDAD_PROGRAMADA 
-				SET id_estado_actividad = 3 
-				WHERE id_actividad_programada = ?
-				""";
-		jdbcTemplate.update(sql, idActividadProgramada);
+	
+	// CAMBIAR EL ESTADO DE LA ACTIVIDAD A COMPLETADA
+	@Transactional(rollbackFor = Exception.class)
+	public void completarActividad(int id_actividad_programada){
+	    this.validarActividadProgramadaExiste(id_actividad_programada);
+	    String sql = """
+	            UPDATE ACTIVIDAD_PROGRAMADA
+	            SET id_estado_actividad = 3
+	            WHERE id_actividad_programada = ?
+	            """;
+	    jdbcTemplate.update(sql, id_actividad_programada);
+	    sql = """
+	            SELECT id_actividad
+	            FROM ACTIVIDAD_PROGRAMADA
+	            WHERE id_actividad_programada = ?
+	            """;
+	    int id_actividad = jdbcTemplate.queryForObject(sql, Integer.class, id_actividad_programada);
+	    if (id_actividad == 3){
+	        sql = """
+	                SELECT P.id_parcela, P.id_empleado, P.id_tipo_cultivo
+	                FROM PARCELA P
+	                JOIN ACTIVIDAD_PROGRAMADA AP ON AP.id_parcela = P.id_parcela
+	                WHERE AP.id_actividad_programada = ?
+	              """;
+	        Map<String, Object> row = jdbcTemplate.queryForMap(sql, id_actividad_programada);
+	        CosechaDto bean = new CosechaDto();
+	        bean.setId_parcela((int) row.get("id_parcela"));
+	        bean.setId_empleado((int) row.get("id_empleado"));
+	        bean.setId_tipo_cultivo((int) row.get("id_tipo_cultivo"));
+	        bean.setCantidad_cosechada(0);
+	        cosechaService.registrarCosecha(bean);
+	    }
 	}
 
 	//MOSTRAR LA ACTIVIDAD COMO EN "CURSO"
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void iniciarActividad(int idActividadProgramada){
 		this.validarActividadProgramadaExiste(idActividadProgramada);
 		String sql = """
