@@ -50,18 +50,16 @@ INSERT INTO EMPLEADO (nombre, apellido, telefono, email, dni, contraseña, id_est
 -- ===========================
 INSERT INTO ACTIVIDAD (nombre, descripcion) VALUES
 ('Siembra', 'Inicio del cultivo'),
-('Mantenimiento', 'Cuidado intermedio (reigo, abonado, control)'),
+('Mantenimiento', 'Cuidado intermedio (riego, abonado, control)'),
 ('Cosecha', 'Fin del ciclo de cultivo');
 
 -- ===========================
 -- 5. Insertar datos en TIPO_CULTIVO
 -- ===========================
-INSERT INTO TIPO_CULTIVO (nombre, tipo) VALUES
-('Tomate', 'Fruta'),
-('Alcachofa', 'Hortaliza'),
-('Arandano', 'Fruta'),
-('Fresa', 'Fruta'),
-('Choclo', 'Cereal');
+INSERT INTO TIPO_CULTIVO (nombre, descripcion) VALUES
+('Tomate', 'Fruto usado en salsas, ensaladas y cocina general.'),
+('Fresa', 'Fruto dulce consumido fresco y en postres.'),
+('Arándano', 'Baya utilizada en jugos, postres y productos saludables.');
 
 -- ===========================
 -- 6. Insertar datos en STOCK_SEMILLAS
@@ -69,9 +67,7 @@ INSERT INTO TIPO_CULTIVO (nombre, tipo) VALUES
 INSERT INTO STOCK_SEMILLAS (id_tipo_cultivo, cantidad_disponible, fecha_actualizacion) VALUES
 (1, 150.0, '2025-10-01'),
 (2, 200.0, '2025-10-05'),
-(3, 100.0, '2025-10-10'),
-(4, 120.0, '2025-10-15'),
-(5, 180.0, '2025-10-18');
+(3, 100.0, '2025-10-10');
 
 -- ===========================
 -- 7. Insertar datos en STOCK_COSECHA
@@ -79,9 +75,7 @@ INSERT INTO STOCK_SEMILLAS (id_tipo_cultivo, cantidad_disponible, fecha_actualiz
 INSERT INTO STOCK_COSECHA (id_tipo_cultivo, cantidad_disponible, fecha_actualizacion) VALUES
 (1, 150.0, '2025-10-30'),
 (2, 45.0, '2025-10-30'),
-(3, 120.0, '2025-10-28'),
-(4, 0.0, '2025-10-01'),
-(5, 0.0, '2025-10-01');
+(3, 120.0, '2025-10-28');
 
 -- ===========================
 -- 8. Insertar datos en HISTORIAL_SIEMBRA

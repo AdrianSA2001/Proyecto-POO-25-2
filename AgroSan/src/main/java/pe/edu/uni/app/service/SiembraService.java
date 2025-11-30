@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.uni.app.dto.SiembraDto;
+import pe.edu.uni.app.dto.ActividadProgramadaDto;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
@@ -22,6 +23,9 @@ public class SiembraService{
 
 	@Autowired
 	private EmpleadoService empleadoService;
+	
+	@Autowired
+	private ActividadService actividadService;
 
 	//REGISTRAR UNA NUEVA SIEMBRA EN LA BD
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
@@ -37,6 +41,9 @@ public class SiembraService{
 		this.validarParcelaNoSembrada(bean.getId_parcela());
 		empleadoService.validarEmpleadoActivo(bean.getId_empleado());
 		this.validarCantidadSembrada(bean.getCantidad_sembrada());
+		if (!hayStockSuficiente(bean.getId_tipo_cultivo(), bean.getCantidad_sembrada())){
+		    throw new RuntimeException("No hay stock suficiente de semillas.");
+		}
 		
 		//PROCESO
 		sql = """
@@ -61,6 +68,12 @@ public class SiembraService{
 		bean.setFecha_estimada_cosecha(fechaEstimadaCosecha.toString());
 		this.actualizarStockSemillas(bean.getId_tipo_cultivo(), bean.getCantidad_sembrada());
 		parcelaService.cambiarEstadoParcela(bean.getId_parcela(), 2);
+		ActividadProgramadaDto actividad = new ActividadProgramadaDto();
+	    actividad.setId_parcela(bean.getId_parcela());
+	    actividad.setId_empleado(bean.getId_empleado());
+	    actividad.setFecha_programada(fechaEstimadaCosecha.toString());
+	    actividad.setId_estado_actividad(1);
+	    actividadService.programarActividad(actividad);
 		return bean;
 	}
 	
@@ -129,14 +142,12 @@ public class SiembraService{
 	}
 
 	//OBTENER LOS DÍAS ESTIMADOS PARA LA COSECHA DE LA PARCELA
-	private int obtenerDiasCosechaPorTipo(int idTipoCultivo){
-		String sql = "SELECT tipo FROM TIPO_CULTIVO WHERE id_tipo_cultivo = ?";
-		String tipo = jdbcTemplate.queryForObject(sql, String.class, idTipoCultivo);
-		return switch (tipo.toLowerCase()) {
-			case "hortaliza" -> 90;  //3 MESES
-			case "fruta" -> 120;     //4 MESES
-			case "cereal" -> 150;    //5 MESES
-			default -> 100;          //POR DEFECTO
+	private int obtenerDiasCosechaPorTipo(int id_tipo_cultivo){
+		return switch (id_tipo_cultivo){
+			case 1 -> 90;
+			case 2 -> 60;
+			case 3 -> 75;
+			default -> 90;
 		};
 	}
 	
