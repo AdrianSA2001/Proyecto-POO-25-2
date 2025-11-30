@@ -28,7 +28,7 @@ public class SiembraService{
 	private ActividadService actividadService;
 
 	//REGISTRAR UNA NUEVA SIEMBRA EN LA BD
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public SiembraDto registrarSiembra(SiembraDto bean){
 		//VARIABLES
 		String sql;
@@ -72,6 +72,7 @@ public class SiembraService{
 	    actividad.setId_parcela(bean.getId_parcela());
 	    actividad.setId_empleado(bean.getId_empleado());
 	    actividad.setFecha_programada(fechaEstimadaCosecha.toString());
+	    actividad.setId_actividad(3);
 	    actividad.setId_estado_actividad(1);
 	    actividadService.programarActividad(actividad);
 		return bean;

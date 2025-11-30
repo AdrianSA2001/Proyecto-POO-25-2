@@ -25,7 +25,7 @@ public class ActividadService{
 	private EmpleadoService empleadoService;
 
 	//PROGRAMAR UNA ACTIVIDAD Y REGISTRARLA EN LA BD
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public ActividadProgramadaDto programarActividad(ActividadProgramadaDto bean){
 		//VARIABLES
 		String sql;
