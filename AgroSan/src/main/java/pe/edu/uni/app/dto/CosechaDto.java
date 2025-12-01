@@ -24,6 +24,9 @@ public class CosechaDto {
 
 	@JsonProperty("fecha_cosecha")
 	private String fecha_cosecha;
+	
+	@JsonProperty("id_estado_actividad")
+	private int id_estado_actividad;
 
 	@JsonProperty("cantidad_cosechada")
 	private double cantidad_cosechada;

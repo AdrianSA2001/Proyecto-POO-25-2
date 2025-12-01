@@ -25,6 +25,9 @@ public class SiembraDto{
 	@JsonProperty("cantidad_sembrada")
 	private double cantidad_sembrada;
 	
+	@JsonProperty("id_estado_actividad")
+	private int id_estado_actividad;
+	
 	@JsonProperty("fecha_estimada_cosecha")
 	private String fecha_estimada_cosecha;
 }

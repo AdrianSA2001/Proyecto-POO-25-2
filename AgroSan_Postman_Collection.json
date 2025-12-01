@@ -259,7 +259,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 3,\n  \"id_empleado\": 1,\n  \"cantidad_sembrada\": 30.0\n}"
+							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 4,\n  \"id_empleado\": 1,\n  \"cantidad_sembrada\": 30.0\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/siembra/registrar",
@@ -310,6 +310,43 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_siembra\": 5,\n  \"id_estado_actividad\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/siembra/finalizar?id_siembra=5&id_estado_actividad=2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"siembra",
+								"finalizar"
+							],
+							"query": [
+								{
+									"key": "id_siembra",
+									"value": "5"
+								},
+								{
+									"key": "id_estado_actividad",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -328,7 +365,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 1,\n  \"id_empleado\": 1,\n  \"cantidad_cosechada\": 25.0\n}"
+							"raw": "{\n  \"id_tipo_cultivo\": 1,\n  \"id_parcela\": 4,\n  \"id_empleado\": 1,\n  \"cantidad_cosechada\": 25.0\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/cosecha/registrar",
@@ -509,225 +546,6 @@
 							"path": [
 								"venta",
 								"listar"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "6. RF2 - ACTIVIDADES (Calendarización)",
-			"item": [
-				{
-					"name": "Listar catálogo de actividades",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/actividad/tipos",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"actividad",
-								"tipos"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Programar una actividad",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"id_actividad\": 1,\n  \"id_parcela\": 4,\n  \"id_empleado\": 1,\n  \"fecha_programada\": \"2025-11-18\",\n  \"id_estado_actividad\": 1\n}"
-						},
-						"url": {
-							"raw": "{{base_url}}/actividad/programar",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"actividad",
-								"programar"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Listar las actividades pendientes",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/actividad/pendientes",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"actividad",
-								"pendientes"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Listar las actividades programadas para hoy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/actividad/hoy",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"actividad",
-								"hoy"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Completar una actividad",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/actividad/completar/1",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"actividad",
-								"completar",
-								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "7. RF3 - ALERTAS (Recordatorios)",
-			"item": [
-				{
-					"name": "Resumen de las alertas",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/alerta/resumen",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"alerta",
-								"resumen"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Ver todas las alertas activas",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/alerta/activas",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"alerta",
-								"activas"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Alerta de cosecha próxima",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/alerta/cosecha-proxima",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"alerta",
-								"cosecha-proxima"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Alerta actividades para hoy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/alerta/actividades-hoy",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"alerta",
-								"actividades-hoy"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Alerta de stock bajo",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/alerta/stock-bajo-semillas",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"alerta",
-								"stock-bajo-semillas"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Alertas filtradas por prioridad alta",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/alerta/prioridad/ALTA",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"alerta",
-								"prioridad",
-								"ALTA"
 							]
 						}
 					},

@@ -23,7 +23,7 @@ public class CosechaService{
 	@Autowired
 	private EmpleadoService empleadoService;
 
-	//REGISTRAR LA COSECHA EN LA BD
+	//PROGRAMAR LA COSECHA EN LA BD
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
 	public CosechaDto registrarCosecha(CosechaDto bean){
 		//VARIABLES
@@ -40,9 +40,9 @@ public class CosechaService{
 
 		//PROCESO
 		sql = """
-				INSERT INTO HISTORIAL_COSECHA 
-				(id_tipo_cultivo, id_parcela, id_empleado, fecha_cosecha, cantidad_cosechada) 
-				VALUES (?, ?, ?, ?, ?)
+				INSERT INTO PROGRAMACION_COSECHA 
+				(id_tipo_cultivo, id_parcela, id_empleado, fecha_cosecha, cantidad_cosechada, id_estado_actividad) 
+				VALUES (?, ?, ?, ?, ?, ?)
 				""";
 		jdbcTemplate.update(connection -> {
 			PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id_cosecha"});
@@ -51,11 +51,13 @@ public class CosechaService{
 			ps.setInt(3, bean.getId_empleado());
 			ps.setDate(4, Date.valueOf(fechaCosecha));
 			ps.setDouble(5, bean.getCantidad_cosechada());
+			ps.setInt(6, 1);
 			return ps;
 		}, keyHolder);
 		int idCosecha = keyHolder.getKey().intValue();
 		bean.setId_cosecha(idCosecha);
 		bean.setFecha_cosecha(fechaCosecha.toString());
+		bean.setId_estado_actividad(1);
 		double cantidadEstimada = this.obtenerCantidadEstimada(bean.getId_parcela(), bean.getId_tipo_cultivo());
 		bean.setCantidad_estimada(cantidadEstimada);
 		if (cantidadEstimada > 0){
@@ -162,7 +164,7 @@ public class CosechaService{
 	public void validarExisteSiembra(int idParcela, int idTipoCultivo){
 		String sql = """
 				SELECT COUNT(1) 
-				FROM HISTORIAL_SIEMBRA 
+				FROM PROGRAMACION_SIEMBRA 
 				WHERE id_parcela = ? AND id_tipo_cultivo = ?
 				""";
 		int cont = jdbcTemplate.queryForObject(sql, Integer.class, idParcela, idTipoCultivo);
@@ -175,7 +177,7 @@ public class CosechaService{
 	private double obtenerCantidadEstimada(int idParcela, int idTipoCultivo){
 		String sql = """
 				SELECT TOP 1 cantidad_sembrada 
-				FROM HISTORIAL_SIEMBRA 
+				FROM PROGRAMACION_SIEMBRA 
 				WHERE id_parcela = ? AND id_tipo_cultivo = ?
 				ORDER BY fecha_siembra DESC
 				""";

@@ -22,9 +22,9 @@ public class SiembraService{
 	@Autowired
 	private EmpleadoService empleadoService;
 
-	//REGISTRAR UNA NUEVA SIEMBRA EN LA BD
+	//PROGRAMAR UNA SIEMBRA EN LA BD
 	@Transactional(rollbackFor = Exception.class)
-	public SiembraDto registrarSiembra(SiembraDto bean){
+	public SiembraDto programarSiembra(SiembraDto bean){
 		//VARIABLES
 		String sql;
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -42,9 +42,9 @@ public class SiembraService{
 		
 		//PROCESO
 		sql = """
-				INSERT INTO HISTORIAL_SIEMBRA 
-				(id_tipo_cultivo, id_parcela, id_empleado, fecha_siembra, cantidad_sembrada) 
-				VALUES (?, ?, ?, ?, ?)
+				INSERT INTO PROGRAMACION_SIEMBRA 
+				(id_tipo_cultivo, id_parcela, id_empleado, fecha_siembra, cantidad_sembrada, id_estado_actividad) 
+				VALUES (?, ?, ?, ?, ?, ?)
 				""";
 		jdbcTemplate.update(connection -> {
 			PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id_siembra"});
@@ -53,17 +53,27 @@ public class SiembraService{
 			ps.setInt(3, bean.getId_empleado());
 			ps.setDate(4, Date.valueOf(fechaSiembra));
 			ps.setDouble(5, bean.getCantidad_sembrada());
+			ps.setInt(6, 1);
 			return ps;
 		}, keyHolder);
 		int idSiembra = keyHolder.getKey().intValue();
 		bean.setId_siembra(idSiembra);
 		bean.setFecha_siembra(fechaSiembra.toString());
+		bean.setId_estado_actividad(1);
 		int diasCosecha = this.obtenerDiasCosechaPorTipo(bean.getId_tipo_cultivo());
 		LocalDate fechaEstimadaCosecha = fechaSiembra.plusDays(diasCosecha);
 		bean.setFecha_estimada_cosecha(fechaEstimadaCosecha.toString());
 		this.actualizarStockSemillas(bean.getId_tipo_cultivo(), bean.getCantidad_sembrada());
 		parcelaService.cambiarEstadoParcela(bean.getId_parcela(), 2);
 		return bean;
+	}
+	
+	//FINALIZAR LA SIEMBRA EN LA BD
+	@Transactional(rollbackFor = Exception.class)
+	public void cambiarEstadoSiembra(int id_siembra, int estado){
+		this.validarSiembraExiste(id_siembra);
+		String sql = "UPDATE PROGRAMACION_SIEMBRA SET id_estado_actividad = ? WHERE id_siembra = ?";
+		jdbcTemplate.update(sql, estado, id_siembra);
 	}
 	
 	//LISTAR TODAS LAS PARCELAS
@@ -74,7 +84,7 @@ public class SiembraService{
 					tc.nombre tipo_cultivo, tc.tipo categoria,
 					p.ubicacion parcela, p.area area_parcela,
 					CONCAT(e.nombre, ' ', e.apellido) empleado
-				FROM HISTORIAL_SIEMBRA hs
+				FROM PROGRAMACION_SIEMBRA hs
 				JOIN TIPO_CULTIVO tc ON hs.id_tipo_cultivo = tc.id_tipo_cultivo
 				JOIN PARCELA p ON hs.id_parcela = p.id_parcela
 				JOIN EMPLEADO e ON hs.id_empleado = e.id_empleado
@@ -91,7 +101,7 @@ public class SiembraService{
 					hs.id_siembra, hs.fecha_siembra, hs.cantidad_sembrada,
 					tc.nombre tipo_cultivo, tc.tipo categoria,
 					CONCAT(e.nombre, ' ', e.apellido) empleado
-				FROM HISTORIAL_SIEMBRA hs
+				FROM PROGRAMACION_SIEMBRA hs
 				JOIN TIPO_CULTIVO tc ON hs.id_tipo_cultivo = tc.id_tipo_cultivo
 				JOIN EMPLEADO e ON hs.id_empleado = e.id_empleado
 				WHERE hs.id_parcela = ?
@@ -104,6 +114,15 @@ public class SiembraService{
 		return resultado;
 	}
 	
+
+	//VALIDAR QUE LA SIEMBRA EXISTE
+	public void validarSiembraExiste(int id_siembra){
+		String sql = "SELECT COUNT(1) FROM PROGRAMACION_SIEMBRA WHERE id_siembra = ?";
+		int cont = jdbcTemplate.queryForObject(sql, Integer.class, id_siembra);
+		if (cont == 0){
+			throw new RuntimeException("No existe el tipo de cultivo con id = " + id_siembra);
+		}
+	}
 	//VALIDAR QUE EL CULTIVO A SEMBRAR EXISTE
 	public void validarTipoCultivoExiste(int idTipoCultivo) {
 		String sql = "SELECT COUNT(1) FROM TIPO_CULTIVO WHERE id_tipo_cultivo = ?";
@@ -122,7 +141,7 @@ public class SiembraService{
 	
 	//VALIDAR QUE LA PARCELA NO HA SIDO SEMBRADA ANTES
 	private void validarParcelaNoSembrada(int idParcela){
-	    String sql = "SELECT COUNT(*) FROM HISTORIAL_SIEMBRA WHERE id_parcela = ?";
+	    String sql = "SELECT COUNT(*) FROM PROGRAMACION_SIEMBRA WHERE id_parcela = ?";
 	    Integer count = jdbcTemplate.queryForObject(sql, Integer.class, idParcela);
 
 	    if (count != null && count > 0){

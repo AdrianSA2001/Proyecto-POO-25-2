@@ -22,7 +22,7 @@ public class SiembraRest{
 	@PostMapping("/registrar")
 	public ResponseEntity<?> registrarSiembra(@RequestBody SiembraDto bean, HttpServletRequest request){
 		try {
-			SiembraDto resultado = siembraService.registrarSiembra(bean);
+			SiembraDto resultado = siembraService.programarSiembra(bean);
 			return ResponseEntity.ok(resultado);
 		} catch (Exception e){
 			ErrorResponse error = new ErrorResponse(
@@ -33,7 +33,26 @@ public class SiembraRest{
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 		}
 	}
+	
+	//CAMBIAR EL ESTADO DE LA SIEMBRA
+	@PutMapping("/finalizar")
+	public ResponseEntity<?> finalizarSiembra(@RequestParam int id_siembra, @RequestParam int id_estado_actividad){
 
+	    try {
+	        // Llamamos al service que actualiza el estado
+	        siembraService.cambiarEstadoSiembra(id_siembra, id_estado_actividad);
+
+	        return ResponseEntity.ok("La siembra con id " + id_siembra + " se actualizó al estado " + id_estado_actividad);
+
+	    } catch (RuntimeException e) {
+	        // Manejo de errores de validación
+	        return ResponseEntity.badRequest().body(e.getMessage());
+	    } catch (Exception e) {
+	        // Otros errores inesperados
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar la siembra");
+	    }
+	}
+	
 	//MOSTRAR TODAS LAS SIEMBRAS
 	@GetMapping("/listar")
 	public ResponseEntity<?> listarSiembras(HttpServletRequest request){
