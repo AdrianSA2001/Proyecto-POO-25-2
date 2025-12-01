@@ -56,25 +56,6 @@ CREATE TABLE ESTADO_ACTIVIDAD (
     descripcion NVARCHAR(50) NOT NULL
 );
 
-CREATE TABLE ACTIVIDAD (
-    id_actividad INT IDENTITY(1,1) PRIMARY KEY,
-    nombre NVARCHAR(50) NOT NULL,
-    descripcion NVARCHAR(255)
-);
-
-CREATE TABLE ACTIVIDAD_PROGRAMADA (
-    id_actividad_programada INT IDENTITY(1,1) PRIMARY KEY,
-    id_actividad INT NOT NULL,
-    id_parcela INT NOT NULL,
-    id_empleado INT NOT NULL,
-    fecha_programada DATE NOT NULL,
-    id_estado_actividad INT NOT NULL,
-    FOREIGN KEY (id_actividad) REFERENCES ACTIVIDAD(id_actividad),
-    FOREIGN KEY (id_parcela) REFERENCES PARCELA(id_parcela),
-    FOREIGN KEY (id_empleado) REFERENCES EMPLEADO(id_empleado),
-    FOREIGN KEY (id_estado_actividad) REFERENCES ESTADO_ACTIVIDAD(id_estado_actividad)
-);
-
 CREATE TABLE TIPO_CULTIVO (
     id_tipo_cultivo INT IDENTITY(1,1) PRIMARY KEY,
     nombre NVARCHAR(50) NOT NULL,
@@ -89,28 +70,32 @@ CREATE TABLE STOCK_SEMILLAS (
     FOREIGN KEY (id_tipo_cultivo) REFERENCES TIPO_CULTIVO(id_tipo_cultivo)
 );
 
-CREATE TABLE HISTORIAL_SIEMBRA (
+CREATE TABLE PROGRAMACION_SIEMBRA (
     id_siembra INT IDENTITY(1,1) PRIMARY KEY,
     id_tipo_cultivo INT NOT NULL,
     id_parcela INT NOT NULL,
     id_empleado INT NOT NULL,
     fecha_siembra DATE NOT NULL,
     cantidad_sembrada DECIMAL(10,2),
+    id_estado_actividad INT NOT NULL,
     FOREIGN KEY (id_tipo_cultivo) REFERENCES TIPO_CULTIVO(id_tipo_cultivo),
     FOREIGN KEY (id_parcela) REFERENCES PARCELA(id_parcela),
-    FOREIGN KEY (id_empleado) REFERENCES EMPLEADO(id_empleado)
+    FOREIGN KEY (id_empleado) REFERENCES EMPLEADO(id_empleado),
+    FOREIGN KEY (id_estado_actividad) REFERENCES ESTADO_ACTIVIDAD(id_estado_actividad)
 );
 
-CREATE TABLE HISTORIAL_COSECHA (
+CREATE TABLE PROGRAMACION_COSECHA (
     id_cosecha INT IDENTITY(1,1) PRIMARY KEY,
     id_tipo_cultivo INT NOT NULL,
     id_parcela INT NOT NULL,
     id_empleado INT NOT NULL,
     fecha_cosecha DATE NOT NULL,
     cantidad_cosechada DECIMAL(10,2),
+    id_estado_actividad INT NOT NULL,
     FOREIGN KEY (id_tipo_cultivo) REFERENCES TIPO_CULTIVO(id_tipo_cultivo),
     FOREIGN KEY (id_parcela) REFERENCES PARCELA(id_parcela),
-    FOREIGN KEY (id_empleado) REFERENCES EMPLEADO(id_empleado)
+    FOREIGN KEY (id_empleado) REFERENCES EMPLEADO(id_empleado),
+    FOREIGN KEY (id_estado_actividad) REFERENCES ESTADO_ACTIVIDAD(id_estado_actividad)
 );
 
 CREATE TABLE STOCK_COSECHA (

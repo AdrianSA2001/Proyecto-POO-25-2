@@ -6,7 +6,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.uni.app.dto.SiembraDto;
-import pe.edu.uni.app.dto.ActividadProgramadaDto;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
@@ -22,9 +21,6 @@ public class SiembraService{
 
 	@Autowired
 	private EmpleadoService empleadoService;
-	
-	@Autowired
-	private ActividadService actividadService;
 
 	//REGISTRAR UNA NUEVA SIEMBRA EN LA BD
 	@Transactional(rollbackFor = Exception.class)
@@ -67,13 +63,6 @@ public class SiembraService{
 		bean.setFecha_estimada_cosecha(fechaEstimadaCosecha.toString());
 		this.actualizarStockSemillas(bean.getId_tipo_cultivo(), bean.getCantidad_sembrada());
 		parcelaService.cambiarEstadoParcela(bean.getId_parcela(), 2);
-		ActividadProgramadaDto actividad = new ActividadProgramadaDto();
-	    actividad.setId_parcela(bean.getId_parcela());
-	    actividad.setId_empleado(bean.getId_empleado());
-	    actividad.setFecha_programada(fechaEstimadaCosecha.toString());
-	    actividad.setId_actividad(3);
-	    actividad.setId_estado_actividad(1);
-	    actividadService.programarActividad(actividad);
 		return bean;
 	}
 	

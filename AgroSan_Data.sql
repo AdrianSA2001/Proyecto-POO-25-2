@@ -16,7 +16,6 @@ INSERT INTO ESTADO_PARCELA (descripcion) VALUES
 
 INSERT INTO ESTADO_ACTIVIDAD (descripcion) VALUES
 ('Pendiente'),
-('En curso'),
 ('Finalizada');
 
 INSERT INTO ROL_EMPLEADO (descripcion) VALUES
@@ -46,14 +45,6 @@ INSERT INTO EMPLEADO (nombre, apellido, telefono, email, dni, contraseña, id_est
 ('Sebastian', 'Paredes', '999666321', 'bastianredes1998@gmail.com', '63314577', 'pass0005', 1, 3);
 
 -- ===========================
--- 4. Insertar datos en ACTIVIDAD
--- ===========================
-INSERT INTO ACTIVIDAD (nombre, descripcion) VALUES
-('Siembra', 'Inicio del cultivo'),
-('Mantenimiento', 'Cuidado intermedio (riego, abonado, control)'),
-('Cosecha', 'Fin del ciclo de cultivo');
-
--- ===========================
 -- 5. Insertar datos en TIPO_CULTIVO
 -- ===========================
 INSERT INTO TIPO_CULTIVO (nombre, descripcion) VALUES
@@ -80,33 +71,20 @@ INSERT INTO STOCK_COSECHA (id_tipo_cultivo, cantidad_disponible, fecha_actualiza
 -- ===========================
 -- 8. Insertar datos en HISTORIAL_SIEMBRA
 -- ===========================
-INSERT INTO HISTORIAL_SIEMBRA (id_tipo_cultivo, id_parcela, id_empleado, fecha_siembra, cantidad_sembrada) VALUES
-(1, 1, 1, '2025-08-12', 40.0),
-(2, 2, 2, '2025-08-12', 40.0),
-(3, 3, 1, '2025-09-14', 60.0);
+INSERT INTO PROGRAMACION_SIEMBRA (id_tipo_cultivo, id_parcela, id_empleado, fecha_siembra, cantidad_sembrada, id_estado_actividad) VALUES
+(1, 1, 1, '2025-08-12', 40.0, 2),
+(2, 2, 2, '2025-08-12', 40.0, 2),
+(3, 3, 1, '2025-09-14', 60.0, 2);
 
 -- ===========================
 -- 9. Insertar datos en HISTORIAL_COSECHA
 -- ===========================
-INSERT INTO HISTORIAL_COSECHA (id_tipo_cultivo, id_parcela, id_empleado, fecha_cosecha, cantidad_cosechada) VALUES
-(1, 1, 1, '2025-09-15', 80.0),
-(2, 2, 2, '2025-09-18', 40.0),
-(1, 1, 1, '2025-10-22', 100.0),
-(2, 2, 2, '2025-10-25', 35.0),
-(3, 3, 5, '2025-10-28', 120.0);
-
--- ===========================
--- 11. Insertar datos en ACTIVIDAD_PROGRAMADA
--- ===========================
-INSERT INTO ACTIVIDAD_PROGRAMADA (id_actividad, id_parcela, id_empleado, fecha_programada, id_estado_actividad) VALUES
-(1, 1, 1, '2025-08-12', 3),
-(1, 2, 2, '2025-08-12', 3),
-(1, 3, 1, '2025-09-14', 3),
-(3, 1, 1, '2025-09-15', 3),
-(3, 2, 2, '2025-09-18', 3),
-(3, 1, 1, '2025-10-22', 3),
-(3, 2, 2, '2025-10-25', 3),
-(3, 3, 5, '2025-10-28', 3);
+INSERT INTO PROGRAMACION_COSECHA (id_tipo_cultivo, id_parcela, id_empleado, fecha_cosecha, cantidad_cosechada, id_estado_actividad) VALUES
+(1, 1, 1, '2025-09-15', 80.0, 2),
+(2, 2, 2, '2025-09-18', 40.0, 2),
+(1, 1, 1, '2025-10-22', 100.0, 2),
+(2, 2, 2, '2025-10-25', 35.0, 2),
+(3, 3, 5, '2025-10-28', 120.0, 2);
 
 -- ===========================
 -- 13. Insertar datos en COMPRADOR y VENTA
