@@ -24,8 +24,8 @@ public class CosechaService{
 	private EmpleadoService empleadoService;
 
 	//PROGRAMAR LA COSECHA EN LA BD
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = Exception.class)
-	public CosechaDto registrarCosecha(CosechaDto bean){
+	@Transactional(rollbackFor = Exception.class)
+	public CosechaDto programarCosecha(CosechaDto bean){
 		//VARIABLES
 		String sql;
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -69,20 +69,29 @@ public class CosechaService{
 		this.actualizarStockCosecha(bean.getId_tipo_cultivo(), bean.getCantidad_cosechada());
 		return bean;
 	}
+	
+	@Transactional(rollbackFor = Exception.class)
+	public void cambiarEstadoCosecha(int id_cosecha, int estado, double cantidad){
+		
+		String sql = "UPDATE PROGRAMACION_COSECHA SET id_estado_actividad = ? WHERE id_cosecha = ?";
+		jdbcTemplate.update(sql, estado, id_cosecha);
+		sql = "UPDATE PROGRAMACION_COSECHA SET cantidad_cosechada = ? WHERE id_cosecha = ?";
+		jdbcTemplate.update(sql, cantidad, id_cosecha);
+	}
 
 	//LISTAR TODAS LAS COSECHAS
 	public List<Map<String, Object>> listarCosechas(){
 		String sql = """
 				SELECT 
-					hc.id_cosecha, hc.fecha_cosecha, hc.cantidad_cosechada,
-					tc.nombre tipo_cultivo, tc.tipo categoria,
-					p.ubicacion parcela, p.area area_parcela,
-					CONCAT(e.nombre, ' ', e.apellido) empleado
-				FROM HISTORIAL_COSECHA hc
+                hc.id_cosecha, hc.fecha_cosecha, hc.cantidad_cosechada,
+                tc.nombre AS tipo_cultivo,
+                p.ubicacion AS parcela, p.area AS area_parcela,
+                CONCAT(e.nombre, ' ', e.apellido) AS empleado
+				FROM PROGRAMACION_COSECHA hc
 				JOIN TIPO_CULTIVO tc ON hc.id_tipo_cultivo = tc.id_tipo_cultivo
-				JOIN PARCELA p ON hc.id_parcela = p.id_parcela
-				JOIN EMPLEADO e ON hc.id_empleado = e.id_empleado
-				ORDER BY hc.fecha_cosecha ASC
+                JOIN PARCELA p ON hc.id_parcela = p.id_parcela
+                JOIN EMPLEADO e ON hc.id_empleado = e.id_empleado
+                ORDER BY hc.fecha_cosecha ASC
 				""";
 		return jdbcTemplate.queryForList(sql);
 	}
@@ -91,15 +100,15 @@ public class CosechaService{
 	public List<Map<String, Object>> listarCosechasPorParcela(int idParcela){
 		parcelaService.validarParcelaExiste(idParcela);
 		String sql = """
-				SELECT 
-					hc.id_cosecha, hc.fecha_cosecha, hc.cantidad_cosechada,
-					tc.nombre tipo_cultivo, tc.tipo categoria,
-					CONCAT(e.nombre, ' ', e.apellido) empleado
-				FROM HISTORIAL_COSECHA hc
-				JOIN TIPO_CULTIVO tc ON hc.id_tipo_cultivo = tc.id_tipo_cultivo
-				JOIN EMPLEADO e ON hc.id_empleado = e.id_empleado
-				WHERE hc.id_parcela = ?
-				ORDER BY hc.fecha_cosecha ASC
+				 SELECT 
+                hc.id_cosecha, hc.fecha_cosecha, hc.cantidad_cosechada,
+                tc.nombre AS tipo_cultivo,
+                CONCAT(e.nombre, ' ', e.apellido) AS empleado
+                FROM PROGRAMACION_COSECHA hc
+                JOIN TIPO_CULTIVO tc ON hc.id_tipo_cultivo = tc.id_tipo_cultivo
+                JOIN EMPLEADO e ON hc.id_empleado = e.id_empleado
+                WHERE hc.id_parcela = ?
+                ORDER BY hc.fecha_cosecha ASC
 				""";
 		return jdbcTemplate.queryForList(sql, idParcela);
 	}
@@ -112,7 +121,7 @@ public class CosechaService{
 					COUNT(hc.id_cosecha) total_cosechas,
 					SUM(hc.cantidad_cosechada) total_cosechado,
 					AVG(hc.cantidad_cosechada) promedio_cosecha
-				FROM HISTORIAL_COSECHA hc
+				FROM PROGRAMACION_COSECHA hc
 				JOIN TIPO_CULTIVO tc ON hc.id_tipo_cultivo = tc.id_tipo_cultivo
 				GROUP BY tc.nombre
 				ORDER BY total_cosechado ASC
@@ -133,8 +142,8 @@ public class CosechaService{
 						THEN (SUM(hc.cantidad_cosechada) / SUM(hs.cantidad_sembrada)) * 100 
 						ELSE 0 
 					END rendimiento_porcentaje
-				FROM HISTORIAL_SIEMBRA hs
-				LEFT JOIN HISTORIAL_COSECHA hc 
+				FROM PROGRAMACION_SIEMBRA hs
+				LEFT JOIN PROGRAMACION_COSECHA hc 
 					ON hs.id_tipo_cultivo = hc.id_tipo_cultivo 
 					AND hs.id_parcela = hc.id_parcela
 				JOIN TIPO_CULTIVO tc ON hs.id_tipo_cultivo = tc.id_tipo_cultivo
@@ -155,7 +164,7 @@ public class CosechaService{
 
 	//VALIDAR QUE LA CANTIDAD COSECHADA SEA CORRECTA
 	public void validarCantidadCosechada(double cantidad){
-		if (cantidad <= 0) {
+		if (cantidad < 0) {
 			throw new RuntimeException("La cantidad cosechada debe ser mayor a 0.");
 		}
 	}

@@ -37,18 +37,12 @@ public class SiembraRest{
 	//CAMBIAR EL ESTADO DE LA SIEMBRA
 	@PutMapping("/finalizar")
 	public ResponseEntity<?> finalizarSiembra(@RequestParam int id_siembra, @RequestParam int id_estado_actividad){
-
 	    try {
-	        // Llamamos al service que actualiza el estado
 	        siembraService.cambiarEstadoSiembra(id_siembra, id_estado_actividad);
-
 	        return ResponseEntity.ok("La siembra con id " + id_siembra + " se actualizó al estado " + id_estado_actividad);
-
-	    } catch (RuntimeException e) {
-	        // Manejo de errores de validación
+	    } catch (RuntimeException e){
 	        return ResponseEntity.badRequest().body(e.getMessage());
-	    } catch (Exception e) {
-	        // Otros errores inesperados
+	    } catch (Exception e){
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar la siembra");
 	    }
 	}

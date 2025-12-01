@@ -28,7 +28,7 @@ public class CosechaRest {
 	@PostMapping("/registrar")
 	public ResponseEntity<?> registrarCosecha(@RequestBody CosechaDto bean, HttpServletRequest request) {
 		try {
-			CosechaDto resultado = cosechaService.registrarCosecha(bean);
+			CosechaDto resultado = cosechaService.programarCosecha(bean);
 			return ResponseEntity.ok(resultado);
 		} catch (Exception e) {
 			ErrorResponse error = new ErrorResponse(
@@ -37,6 +37,16 @@ public class CosechaRest {
 					request.getRequestURI()
 			);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+		}
+	}
+	
+	@PutMapping("/prueba")
+	public ResponseEntity<?> finalizarCosecha(@RequestParam int id_cosecha, @RequestParam int id_estado_actividad, @RequestParam double cantidad_cosechada){
+		try {
+			cosechaService.cambiarEstadoCosecha(id_cosecha, id_estado_actividad, cantidad_cosechada);
+			return ResponseEntity.ok("Ok");
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 

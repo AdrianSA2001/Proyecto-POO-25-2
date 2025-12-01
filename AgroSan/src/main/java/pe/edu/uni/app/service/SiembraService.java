@@ -6,6 +6,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.uni.app.dto.SiembraDto;
+import pe.edu.uni.app.dto.CosechaDto;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.time.LocalDate;
@@ -21,6 +22,9 @@ public class SiembraService{
 
 	@Autowired
 	private EmpleadoService empleadoService;
+	
+	@Autowired
+	private CosechaService cosechaService;
 
 	//PROGRAMAR UNA SIEMBRA EN LA BD
 	@Transactional(rollbackFor = Exception.class)
@@ -68,28 +72,41 @@ public class SiembraService{
 		return bean;
 	}
 	
-	//FINALIZAR LA SIEMBRA EN LA BD
+	//CAMBIAR ESTADO DE LA SIEMBRA EN LA BD
 	@Transactional(rollbackFor = Exception.class)
 	public void cambiarEstadoSiembra(int id_siembra, int estado){
 		this.validarSiembraExiste(id_siembra);
 		String sql = "UPDATE PROGRAMACION_SIEMBRA SET id_estado_actividad = ? WHERE id_siembra = ?";
 		jdbcTemplate.update(sql, estado, id_siembra);
+		if (estado == 2){
+			sql = """
+					SELECT id_tipo_cultivo, id_parcela, id_empleado, fecha_siembra
+					FROM PROGRAMACION_SIEMBRA WHERE id_siembra = ? 
+					""";
+			Map<String, Object> siembra = jdbcTemplate.queryForMap(sql, id_siembra);
+			CosechaDto cosecha = new CosechaDto();
+		    cosecha.setId_parcela((int) siembra.get("id_parcela"));
+		    cosecha.setId_tipo_cultivo((int) siembra.get("id_tipo_cultivo"));
+		    cosecha.setCantidad_cosechada(0.0);
+		    cosecha.setId_empleado((int) siembra.get("id_empleado"));
+		    cosechaService.programarCosecha(cosecha);
+		}
 	}
 	
 	//LISTAR TODAS LAS PARCELAS
 	public List<Map<String, Object>> listarSiembras(){
 		String sql = """
 				SELECT 
-					hs.id_siembra, hs.fecha_siembra, hs.cantidad_sembrada,
-					tc.nombre tipo_cultivo, tc.tipo categoria,
-					p.ubicacion parcela, p.area area_parcela,
-					CONCAT(e.nombre, ' ', e.apellido) empleado
+                hs.id_siembra, hs.fecha_siembra, hs.cantidad_sembrada,
+                tc.nombre AS tipo_cultivo,
+                p.ubicacion AS parcela, p.area AS area_parcela,
+                CONCAT(e.nombre, ' ', e.apellido) AS empleado
 				FROM PROGRAMACION_SIEMBRA hs
-				JOIN TIPO_CULTIVO tc ON hs.id_tipo_cultivo = tc.id_tipo_cultivo
-				JOIN PARCELA p ON hs.id_parcela = p.id_parcela
-				JOIN EMPLEADO e ON hs.id_empleado = e.id_empleado
-				ORDER BY hs.fecha_siembra ASC
-				""";
+                JOIN TIPO_CULTIVO tc ON hs.id_tipo_cultivo = tc.id_tipo_cultivo
+                JOIN PARCELA p ON hs.id_parcela = p.id_parcela
+                JOIN EMPLEADO e ON hs.id_empleado = e.id_empleado
+                ORDER BY hs.fecha_siembra ASC
+                """;
 		return jdbcTemplate.queryForList(sql);
 	}
 	
@@ -98,14 +115,14 @@ public class SiembraService{
 		parcelaService.validarParcelaExiste(idParcela);
 		String sql = """
 				SELECT 
-					hs.id_siembra, hs.fecha_siembra, hs.cantidad_sembrada,
-					tc.nombre tipo_cultivo, tc.tipo categoria,
-					CONCAT(e.nombre, ' ', e.apellido) empleado
-				FROM PROGRAMACION_SIEMBRA hs
-				JOIN TIPO_CULTIVO tc ON hs.id_tipo_cultivo = tc.id_tipo_cultivo
-				JOIN EMPLEADO e ON hs.id_empleado = e.id_empleado
-				WHERE hs.id_parcela = ?
-				ORDER BY hs.fecha_siembra DESC
+                hs.id_siembra, hs.fecha_siembra, hs.cantidad_sembrada,
+                tc.nombre AS tipo_cultivo,
+                CONCAT(e.nombre, ' ', e.apellido) AS empleado
+                FROM PROGRAMACION_SIEMBRA hs
+                JOIN TIPO_CULTIVO tc ON hs.id_tipo_cultivo = tc.id_tipo_cultivo
+                JOIN EMPLEADO e ON hs.id_empleado = e.id_empleado
+                WHERE hs.id_parcela = ?
+                ORDER BY hs.fecha_siembra DESC
 				""";
 		List<Map<String, Object>> resultado = jdbcTemplate.queryForList(sql, idParcela);
 		if (resultado.isEmpty()) {
