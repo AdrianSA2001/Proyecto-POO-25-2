@@ -110,6 +110,7 @@ public class VentaService{
 	public List<Map<String, Object>> consultarStockDisponible(){
 		String sql = """
 				SELECT 
+					sc.id_tipo_cultivo,
 					tc.nombre tipo_cultivo,
 					sc.cantidad_disponible stock_disponible,
 					sc.fecha_actualizacion ultima_actualizacion

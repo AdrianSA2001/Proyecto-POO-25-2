@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgroSan - Sistema de Gestión</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">AS</div>
+        <h2>AgroSan</h2>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-item active" data-section="dashboard">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+          </svg>
+          <span>Dashboard</span>
+        </a>
+        
+        <a href="#parcelas" class="nav-item" data-section="parcelas">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.384l3-1.5a1 1 0 00.788 0l3 1.5a.999.999 0 01.356.384l1.644.821a1 1 0 00.788 0l7-3a1 1 0 000-1.84l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.909a.996.996 0 00.482.05M16.69 9.397l-1.64.82a11.115 11.115 0 01.25 3.762 1 1 0 01-.89.89 8.969 8.969 0 00-1.05.174V10.12l1.64-.82a.996.996 0 00.79-.003z"/>
+          </svg>
+          <span>Parcelas</span>
+        </a>
+        
+        <a href="#siembras" class="nav-item" data-section="siembras">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clip-rule="evenodd"/>
+          </svg>
+          <span>Siembras</span>
+        </a>
+        
+        <a href="#cosechas" class="nav-item" data-section="cosechas">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+          </svg>
+          <span>Cosechas</span>
+        </a>
+        
+        <a href="#actividades" class="nav-item" data-section="actividades">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+          </svg>
+          <span>Actividades</span>
+        </a>
+        
+        <a href="#ventas" class="nav-item" data-section="ventas">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+          </svg>
+          <span>Ventas</span>
+        </a>
+        
+        <a href="#empleados" class="nav-item" data-section="empleados">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+          </svg>
+          <span>Empleados</span>
+        </a>
+        
+        <a href="#alertas" class="nav-item" data-section="alertas">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+          </svg>
+          <span>Alertas</span>
+        </a>
+        
+        <a href="#admin" class="nav-item" data-section="admin">
+          <svg viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
+          </svg>
+          <span>Administración</span>
+        </a>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <div class="user-details">
+            <h4 id="userName">Usuario</h4>
+            <p id="userRole">Empleado</p>
+          </div>
+        </div>
+        <button class="btn btn-logout" onclick="AuthService.logout()">
+          Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="topbar">
+        <h1 id="pageTitle">Dashboard</h1>
+        <div id="alertBadge" style="display: none;"></div>
+      </div>
+      
+      <div class="content-area">
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="section active">
+          <!-- Header del Dashboard -->
+          <div class="dashboard-header" style="
+            background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+          ">
+            <div style="position: relative; z-index: 1;">
+              <h2 style="margin: 0; font-size: 1.8rem; display: flex; align-items: center; gap: 0.75rem;">
+                <span style="font-size: 2rem;">🏠</span> Dashboard Principal
+              </h2>
+              <p style="margin: 0.5rem 0 0 0; opacity: 0.9;" id="welcomeMessage">Bienvenido al sistema de gestión agrícola</p>
+            </div>
+            <div style="text-align: right; position: relative; z-index: 1;">
+              <div style="font-size: 0.9rem; opacity: 0.8;">Fecha actual</div>
+              <div id="currentDate" style="font-weight: bold; font-size: 1.1rem;">--</div>
+            </div>
+            <!-- Decoración -->
+            <div style="position: absolute; right: -20px; top: -20px; font-size: 8rem; opacity: 0.1;">🌾</div>
+          </div>
+
+          <!-- Estadísticas con estilo mejorado -->
+          <div class="stats-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+            <div class="stat-card" style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.5rem;">Parcelas Activas</div>
+                  <div style="font-size: 2.5rem; font-weight: bold;" id="statParcelas">-</div>
+                  <div style="font-size: 0.8rem; opacity: 0.8; margin-top: 0.5rem;">📈 En producción</div>
+                </div>
+                <div style="font-size: 3rem; opacity: 0.3;">🌾</div>
+              </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.5rem;">Actividades Pendientes</div>
+                  <div style="font-size: 2.5rem; font-weight: bold;" id="statActividades">-</div>
+                  <div style="font-size: 0.8rem; opacity: 0.8; margin-top: 0.5rem;">⏰ Por realizar</div>
+                </div>
+                <div style="font-size: 3rem; opacity: 0.3;">📋</div>
+              </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.5rem;">Alertas Activas</div>
+                  <div style="font-size: 2.5rem; font-weight: bold;" id="statAlertas">-</div>
+                  <div style="font-size: 0.8rem; opacity: 0.8; margin-top: 0.5rem;">⚠️ Requieren atención</div>
+                </div>
+                <div style="font-size: 3rem; opacity: 0.3;">🔔</div>
+              </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <div style="font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.5rem;">Ventas del Mes</div>
+                  <div style="font-size: 2.5rem; font-weight: bold;" id="statVentas">-</div>
+                  <div style="font-size: 0.8rem; opacity: 0.8; margin-top: 0.5rem;">💵 Este periodo</div>
+                </div>
+                <div style="font-size: 3rem; opacity: 0.3;">💰</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Contenido principal en grid -->
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+            <!-- Actividades de hoy -->
+            <div class="card" style="border-radius: 16px;">
+              <div class="card-header" style="display: flex; align-items: center; gap: 0.75rem;">
+                <span style="font-size: 1.5rem;">📅</span>
+                <h2 style="margin: 0;">Actividades de Hoy</h2>
+              </div>
+              <div class="card-body">
+                <div id="actividadesHoyContent" class="loading">
+                  <div class="loading-spinner"></div>
+                  <p>Cargando...</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel lateral con info rápida -->
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <!-- Clima simulado -->
+              <div class="card" style="border-radius: 16px; background: linear-gradient(135deg, #0ea5e9, #0284c7);">
+                <div class="card-body" style="color: white; text-align: center; padding: 1.5rem;">
+                  <div style="font-size: 4rem; margin-bottom: 0.5rem;">☀️</div>
+                  <div style="font-size: 2rem; font-weight: bold;">24°C</div>
+                  <div style="opacity: 0.9;">Lima, Perú</div>
+                  <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: space-around;">
+                    <div>
+                      <div style="font-size: 0.8rem; opacity: 0.8;">Humedad</div>
+                      <div style="font-weight: bold;">65%</div>
+                    </div>
+                    <div>
+                      <div style="font-size: 0.8rem; opacity: 0.8;">Viento</div>
+                      <div style="font-weight: bold;">12 km/h</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accesos rápidos -->
+              <div class="card" style="border-radius: 16px;">
+                <div class="card-header">
+                  <h3 style="margin: 0; font-size: 1rem;">⚡ Accesos Rápidos</h3>
+                </div>
+                <div class="card-body" style="display: grid; gap: 0.5rem;">
+                  <button onclick="showSiembraForm()" style="
+                    padding: 0.75rem 1rem;
+                    background: rgba(34, 197, 94, 0.1);
+                    border: 1px solid rgba(34, 197, 94, 0.3);
+                    border-radius: 10px;
+                    color: #4ade80;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-weight: 500;
+                    transition: all 0.3s;
+                  ">
+                    🌱 Nueva Siembra
+                  </button>
+                  <button onclick="showCosechaForm()" style="
+                    padding: 0.75rem 1rem;
+                    background: rgba(59, 130, 246, 0.1);
+                    border: 1px solid rgba(59, 130, 246, 0.3);
+                    border-radius: 10px;
+                    color: #60a5fa;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-weight: 500;
+                    transition: all 0.3s;
+                  ">
+                    🥬 Nueva Cosecha
+                  </button>
+                  <button onclick="showVentaForm()" style="
+                    padding: 0.75rem 1rem;
+                    background: rgba(168, 85, 247, 0.1);
+                    border: 1px solid rgba(168, 85, 247, 0.3);
+                    border-radius: 10px;
+                    color: #c084fc;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    font-weight: 500;
+                    transition: all 0.3s;
+                  ">
+                    💰 Nueva Venta
+                  </button>
+                </div>
+              </div>
+
+              <!-- Tip del día -->
+              <div class="card" style="border-radius: 16px; background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e;">
+                <div class="card-body" style="padding: 1rem;">
+                  <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                    <span style="font-size: 1.5rem;">💡</span>
+                    <div>
+                      <strong style="font-size: 0.9rem;">Tip del día</strong>
+                      <p style="margin: 0.25rem 0 0 0; font-size: 0.85rem; opacity: 0.9;">
+                        Recuerda revisar el calendario de riego para mantener tus cultivos saludables.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Parcelas Section -->
+        <section id="parcelas-section" class="section">
+          <div class="card">
+            <div class="card-header">
+              <h2>Gestión de Parcelas</h2>
+              <button class="btn btn-primary" onclick="showParcelaForm()">+ Nueva Parcela</button>
+            </div>
+            <div class="card-body">
+              <div class="tabs">
+                <button class="tab active" onclick="loadParcelas('todas')">Todas</button>
+                <button class="tab" onclick="loadParcelas('disponibles')">Disponibles</button>
+                <button class="tab" onclick="loadParcelas('nodisponibles')">No Disponibles</button>
+              </div>
+              <div id="parcelasContent" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Cargando parcelas...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Siembras Section -->
+        <section id="siembras-section" class="section">
+          <div class="card">
+            <div class="card-header">
+              <h2>Gestión de Siembras</h2>
+              <button class="btn btn-primary" onclick="showSiembraForm()">+ Nueva Siembra</button>
+            </div>
+            <div class="card-body">
+              <div id="siembrasContent" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Cargando siembras...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Cosechas Section -->
+        <section id="cosechas-section" class="section">
+          <div class="card">
+            <div class="card-header">
+              <h2>Gestión de Cosechas</h2>
+              <button class="btn btn-primary" onclick="showCosechaForm()">+ Nueva Cosecha</button>
+            </div>
+            <div class="card-body">
+              <div id="cosechasContent" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Cargando cosechas...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Actividades Section -->
+        <section id="actividades-section" class="section">
+          <div class="card">
+            <div class="card-header">
+              <h2>Gestión de Actividades</h2>
+              <button class="btn btn-primary" onclick="showActividadForm()">+ Programar Actividad</button>
+            </div>
+            <div class="card-body">
+              <div class="tabs">
+                <button class="tab active" onclick="loadActividades('pendientes')">Pendientes</button>
+                <button class="tab" onclick="loadActividades('hoy')">Hoy</button>
+                <button class="tab" onclick="loadActividades('todas')">Todas</button>
+              </div>
+              <div id="actividadesContent" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Cargando actividades...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Ventas Section -->
+        <section id="ventas-section" class="section">
+          <div class="card">
+            <div class="card-header">
+              <h2>Gestión de Ventas</h2>
+              <button class="btn btn-primary" onclick="showVentaForm()">+ Nueva Venta</button>
+            </div>
+            <div class="card-body">
+              <div id="ventasContent" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Cargando ventas...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Empleados Section -->
+        <section id="empleados-section" class="section">
+          <div class="card">
+            <div class="card-header">
+              <h2>Gestión de Empleados</h2>
+              <button class="btn btn-primary" onclick="showEmpleadoForm()">+ Nuevo Empleado</button>
+            </div>
+            <div class="card-body">
+              <div class="tabs">
+                <button class="tab active" onclick="loadEmpleados('todos')">Todos</button>
+                <button class="tab" onclick="loadEmpleados('activos')">Activos</button>
+                <button class="tab" onclick="loadEmpleados('vacaciones')">Vacaciones</button>
+                <button class="tab" onclick="loadEmpleados('retirados')">Retirados</button>
+              </div>
+              <div id="empleadosContent" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Cargando empleados...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Alertas Section -->
+        <section id="alertas-section" class="section">
+          <div class="card">
+            <div class="card-header">
+              <h2>Alertas del Sistema</h2>
+            </div>
+            <div class="card-body">
+              <div id="alertasContent" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Cargando alertas...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Admin Section -->
+        <section id="admin-section" class="section">
+          <!-- Header con información del admin -->
+          <div class="admin-header" style="
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          ">
+            <div>
+              <h2 style="margin: 0; font-size: 1.8rem;">🛡️ Panel de Administración</h2>
+              <p style="margin: 0.5rem 0 0 0; opacity: 0.9;">Bienvenido al centro de control de AgroSan</p>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.9rem; opacity: 0.8;">Última actualización</div>
+              <div id="adminLastUpdate" style="font-weight: bold;">--</div>
+            </div>
+          </div>
+
+          <!-- Estadísticas principales con iconos -->
+          <div class="stats-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+            <div class="stat-card" style="background: linear-gradient(135deg, #11998e, #38ef7d); color: white; border-radius: 12px; padding: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 0.85rem; opacity: 0.9;">Total Parcelas</div>
+                  <div style="font-size: 2.5rem; font-weight: bold;" id="adminTotalParcelas">-</div>
+                </div>
+                <div style="font-size: 3rem; opacity: 0.3;">🌾</div>
+              </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white; border-radius: 12px; padding: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 0.85rem; opacity: 0.9;">Total Siembras</div>
+                  <div style="font-size: 2.5rem; font-weight: bold;" id="adminTotalSiembras">-</div>
+                </div>
+                <div style="font-size: 3rem; opacity: 0.3;">🌱</div>
+              </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #4facfe, #00f2fe); color: white; border-radius: 12px; padding: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 0.85rem; opacity: 0.9;">Total Cosechas</div>
+                  <div style="font-size: 2.5rem; font-weight: bold;" id="adminTotalCosechas">-</div>
+                </div>
+                <div style="font-size: 3rem; opacity: 0.3;">🥬</div>
+              </div>
+            </div>
+            <div class="stat-card" style="background: linear-gradient(135deg, #fa709a, #fee140); color: white; border-radius: 12px; padding: 1.5rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 0.85rem; opacity: 0.9;">Total Ventas</div>
+                  <div style="font-size: 2.5rem; font-weight: bold;" id="adminTotalVentas">-</div>
+                </div>
+                <div style="font-size: 3rem; opacity: 0.3;">💰</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gráficos y análisis -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+            <!-- Gráfico circular de parcelas -->
+            <div class="card" style="border-radius: 12px;">
+              <div class="card-header">
+                <h3 style="margin: 0;">📊 Estado de Parcelas</h3>
+              </div>
+              <div class="card-body" style="display: flex; align-items: center; gap: 2rem;">
+                <div id="parcelasChart" style="width: 150px; height: 150px; position: relative;">
+                  <!-- Gráfico circular CSS -->
+                </div>
+                <div id="parcelasLegend">
+                  <!-- Leyenda -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Gráfico de barras de actividad -->
+            <div class="card" style="border-radius: 12px;">
+              <div class="card-header">
+                <h3 style="margin: 0;">📈 Actividad Mensual</h3>
+              </div>
+              <div class="card-body">
+                <div id="actividadBars" style="display: flex; align-items: flex-end; gap: 0.5rem; height: 150px;">
+                  <!-- Barras de gráfico -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resumen de empleados y equipo -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <!-- Equipo -->
+            <div class="card" style="border-radius: 12px;">
+              <div class="card-header">
+                <h3 style="margin: 0;">👥 Equipo de Trabajo</h3>
+              </div>
+              <div class="card-body" id="adminEquipo">
+                <!-- Contenido dinámico -->
+              </div>
+            </div>
+
+            <!-- Espacio para imagen o logo -->
+            <div class="card" style="border-radius: 12px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+              <div class="card-body" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px; text-align: center;">
+                <div style="font-size: 5rem; margin-bottom: 1rem;">🌿</div>
+                <h2 style="color: #4ade80; margin: 0;">AgroSan</h2>
+                <p style="color: #94a3b8; margin: 0.5rem 0 0 0;">Sistema de Gestión Agrícola</p>
+                <div style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(74, 222, 128, 0.1); border-radius: 20px; color: #4ade80; font-size: 0.85rem;">
+                  v2.0 - Diciembre 2025
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Toast Container -->
+  <div class="toast-container"></div>
+  
+  <!-- Modals will be inserted here dynamically -->
+  <div id="modalContainer"></div>
+  
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/modals.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+
