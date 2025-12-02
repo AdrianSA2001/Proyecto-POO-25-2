@@ -3,16 +3,512 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agrosan - Inicio</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>AgroSan - Sistema de Gestión Agrícola</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+    
+    /* Header */
+    .header {
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #4ade80;
+    }
+    
+    .logo-icon {
+      font-size: 2rem;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: #4ade80;
+    }
+    
+    .btn-login {
+      padding: 0.75rem 1.5rem;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(34, 197, 94, 0.3);
+    }
+    
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(34, 197, 94, 0.15) 0%, transparent 30%),
+        radial-gradient(circle at 80% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 30%);
+      pointer-events: none;
+    }
+    
+    .hero-content {
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero-text h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    
+    .hero-text h1 span {
+      background: linear-gradient(135deg, #4ade80, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero-text p {
+      font-size: 1.25rem;
+      color: #94a3b8;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .btn-primary {
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(34, 197, 94, 0.4);
+    }
+    
+    .btn-secondary {
+      padding: 1rem 2rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: #e2e8f0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.2);
+    }
+    
+    /* Hero Image/Illustration */
+    .hero-visual {
+      position: relative;
+    }
+    
+    .hero-image {
+      width: 100%;
+      height: 500px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1));
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-image::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(45deg, transparent 30%, rgba(34, 197, 94, 0.1) 50%, transparent 70%);
+      animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .hero-emoji {
+      font-size: 12rem;
+      animation: float 4s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .floating-icons {
+      position: absolute;
+      inset: 0;
+    }
+    
+    .floating-icon {
+      position: absolute;
+      font-size: 3rem;
+      opacity: 0.3;
+      animation: floatIcon 8s ease-in-out infinite;
+    }
+    
+    .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+    .floating-icon:nth-child(2) { top: 20%; right: 15%; animation-delay: 1s; }
+    .floating-icon:nth-child(3) { bottom: 30%; left: 15%; animation-delay: 2s; }
+    .floating-icon:nth-child(4) { bottom: 15%; right: 20%; animation-delay: 3s; }
+    
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(10deg); }
+    }
+    
+    /* Features Section */
+    .features {
+      padding: 6rem 3rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    
+    .section-title h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .section-title p {
+      color: #94a3b8;
+      font-size: 1.1rem;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    
+    .feature-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 2rem;
+      transition: all 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(74, 222, 128, 0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(59, 130, 246, 0.2));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .feature-card p {
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+    
+    /* Stats Section */
+    .stats {
+      padding: 4rem 3rem;
+      background: rgba(30, 41, 59, 0.3);
+    }
+    
+    .stats-grid {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #4ade80, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .stat-label {
+      color: #94a3b8;
+      margin-top: 0.5rem;
+    }
+    
+    /* CTA Section */
+    .cta {
+      padding: 6rem 3rem;
+      text-align: center;
+    }
+    
+    .cta-box {
+      max-width: 800px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(59, 130, 246, 0.1));
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 4rem;
+    }
+    
+    .cta h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .cta p {
+      color: #94a3b8;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    
+    /* Footer */
+    .footer {
+      padding: 3rem;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .footer p {
+      color: #64748b;
+    }
+    
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-content { grid-template-columns: 1fr; text-align: center; }
+      .hero-text h1 { font-size: 2.5rem; }
+      .hero-visual { display: none; }
+      .hero-buttons { justify-content: center; }
+      .features-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+    }
+  </style>
 </head>
 
 <body>
-  <div class="contenedor">
-    <h1>Granja Agrosan</h1>
-    <p>Bienvenido al sistema de gestión agrícola</p>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">🌿</span>
+      AgroSan
+    </div>
+    <nav class="nav-links">
+      <a href="#features">Características</a>
+      <a href="#stats">Estadísticas</a>
+      <a href="#contact">Contacto</a>
+    </nav>
+    <a href="../index.html" class="btn-login">Iniciar Sesión</a>
+  </header>
 
-    <a href="../menu/menu.html" class="boton">Ingresar al sistema</a>
-  </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Gestiona tu <span>producción agrícola</span> de forma inteligente</h1>
+        <p>AgroSan es la plataforma líder en gestión agrícola. Controla tus parcelas, siembras, cosechas, empleados y ventas desde un solo lugar. Optimiza tu rendimiento con datos en tiempo real.</p>
+        <div class="hero-buttons">
+          <a href="../index.html" class="btn-primary">
+            🚀 Comenzar Ahora
+          </a>
+          <a href="#features" class="btn-secondary">
+            📖 Conocer Más
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-image">
+          <div class="floating-icons">
+            <span class="floating-icon">🌾</span>
+            <span class="floating-icon">🥕</span>
+            <span class="floating-icon">🍅</span>
+            <span class="floating-icon">🌽</span>
+          </div>
+          <div class="hero-emoji">🌱</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="section-title">
+      <h2>Todo lo que necesitas para tu granja</h2>
+      <p>Herramientas poderosas para optimizar cada aspecto de tu producción</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🌾</div>
+        <h3>Gestión de Parcelas</h3>
+        <p>Administra todas tus parcelas, controla su estado y monitorea su rendimiento en tiempo real.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌱</div>
+        <h3>Control de Siembras</h3>
+        <p>Planifica y registra todas tus siembras. El sistema programa automáticamente las cosechas.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🥬</div>
+        <h3>Registro de Cosechas</h3>
+        <p>Documenta cada cosecha con detalles precisos y actualiza automáticamente tu inventario.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <h3>Actividades Programadas</h3>
+        <p>Organiza riego, fertilización y otras actividades. Recibe alertas de tareas pendientes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>Gestión de Ventas</h3>
+        <p>Registra ventas, gestiona compradores y mantén un control preciso de tus ingresos.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>Equipo de Trabajo</h3>
+        <p>Administra tu equipo, asigna tareas y monitorea el desempeño de cada empleado.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats" id="stats">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-value">500+</div>
+        <div class="stat-label">Parcelas Gestionadas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">1,200+</div>
+        <div class="stat-label">Cosechas Registradas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">50+</div>
+        <div class="stat-label">Empleados Activos</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">99%</div>
+        <div class="stat-label">Satisfacción</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta" id="contact">
+    <div class="cta-box">
+      <h2>¿Listo para optimizar tu granja?</h2>
+      <p>Únete a cientos de agricultores que ya confían en AgroSan para gestionar su producción.</p>
+      <a href="../index.html" class="btn-primary">
+        🌿 Acceder al Sistema
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 AgroSan - Sistema de Gestión Agrícola | Desarrollado con 💚</p>
+  </footer>
 </body>
 </html>

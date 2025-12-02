@@ -159,10 +159,23 @@ public class ParcelaService{
 	}
 	
 	//ACTUALIZAR EL ESTADO DE LA PARCELA
-	@Transactional(propagation = Propagation.MANDATORY)
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void cambiarEstadoParcela(int idParcela, int nuevoEstado){
 		this.validarParcelaExiste(idParcela);
+		// Validar que el nuevo estado sea válido (1 = Inactiva, 2 = Activa)
+		if (nuevoEstado != 1 && nuevoEstado != 2) {
+			throw new RuntimeException("El estado de parcela debe ser 1 (Inactiva) o 2 (Activa). Estado recibido: " + nuevoEstado);
+		}
+		// Obtener el estado actual
+		int estadoActual = this.obtenerEstadoParcela(idParcela);
+		if (estadoActual == nuevoEstado) {
+			String estadoTexto = nuevoEstado == 1 ? "Inactiva" : "Activa";
+			throw new RuntimeException("La parcela ya está en estado '" + estadoTexto + "' (estado " + nuevoEstado + ")");
+		}
 		String sql = "UPDATE PARCELA SET id_estado_parcela = ? WHERE id_parcela = ?";
-		jdbcTemplate.update(sql, nuevoEstado, idParcela);
+		int filasAfectadas = jdbcTemplate.update(sql, nuevoEstado, idParcela);
+		if (filasAfectadas == 0) {
+			throw new RuntimeException("No se pudo actualizar el estado de la parcela. Verifique que la parcela exista.");
+		}
 	}
 }

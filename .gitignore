@@ -60,3 +60,12 @@ logs/
 # Virtual machine crash logs
 hs_err_pid*
 
+# Guías y documentación temporal
+GUIA_BEGINNER_FRIENDLY.md
+GUIA_POSTMAN.md
+POSTMAN_WEB_QUICK_START.md
+INICIO-RAPIDO.md
+Informe_AgroSan_Parte*.md
+ModeloInforme.md
+PROYECTO_REQUIREMENTS.md
+

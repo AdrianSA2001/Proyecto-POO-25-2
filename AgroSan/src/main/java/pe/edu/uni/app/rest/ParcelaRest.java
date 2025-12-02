@@ -11,10 +11,14 @@ import pe.edu.uni.app.service.ParcelaService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @RestController
-@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"})
+@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500", "http://localhost:*", "http://127.0.0.1:*"}, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}, allowedHeaders = "*", maxAge = 3600)
 @RequestMapping("/agrosan/parcela")
 public class ParcelaRest{
+	private static final Logger logger = LoggerFactory.getLogger(ParcelaRest.class);
+	
 	@Autowired
 	private ParcelaService parcelaService;
 
@@ -111,6 +115,66 @@ public class ParcelaRest{
 						request.getRequestURI()
 				);
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+			}
+		}
+		
+		//ACTIVAR UNA PARCELA (CAMBIAR DE INACTIVA A ACTIVA)
+		@PutMapping("/activar/{id}")
+		public ResponseEntity<?> activarParcela(@PathVariable int id, HttpServletRequest request){
+			logger.info("==========================================");
+			logger.info("PUT /agrosan/parcela/activar/{} - INICIANDO", id);
+			logger.info("Request URI: {}", request.getRequestURI());
+			logger.info("Request Method: {}", request.getMethod());
+			logger.info("Request Headers: {}", request.getHeaderNames());
+			logger.info("ID Parcela recibido: {}", id);
+			try {
+				logger.info("Llamando a parcelaService.cambiarEstadoParcela({}, 2)", id);
+				parcelaService.cambiarEstadoParcela(id, 2);
+				logger.info("Parcela {} activada exitosamente", id);
+				ResponseEntity<?> response = ResponseEntity.ok(Map.of("mensaje", "Parcela activada exitosamente", "id_parcela", id));
+				logger.info("Respuesta enviada: {}", response.getStatusCode());
+				logger.info("==========================================");
+				return response;
+			} catch (Exception e){
+				logger.error("ERROR al activar parcela {}: {}", id, e.getMessage(), e);
+				ErrorResponse error = new ErrorResponse(
+						e.getMessage(),
+						LocalDateTime.now().toString(),
+						request.getRequestURI()
+				);
+				logger.error("Respuesta de error: {}", error);
+				logger.info("==========================================");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+			}
+		}
+		
+		//INACTIVAR UNA PARCELA (CAMBIAR DE ACTIVA A INACTIVA)
+		@PutMapping("/inactivar/{id}")
+		public ResponseEntity<?> inactivarParcela(@PathVariable int id, HttpServletRequest request){
+			logger.info("==========================================");
+			logger.info("PUT /agrosan/parcela/inactivar/{} - INICIANDO", id);
+			logger.info("Request URI: {}", request.getRequestURI());
+			logger.info("Request Method: {}", request.getMethod());
+			logger.info("Request Headers: {}", request.getHeaderNames());
+			logger.info("ID Parcela recibido: {}", id);
+			try {
+				logger.info("Llamando a parcelaService.cambiarEstadoParcela({}, 1)", id);
+				parcelaService.cambiarEstadoParcela(id, 1);
+				logger.info("Parcela {} inactivada exitosamente", id);
+				ResponseEntity<?> response = ResponseEntity.ok(Map.of("mensaje", "Parcela inactivada exitosamente", "id_parcela", id));
+				logger.info("Respuesta enviada: {}", response.getStatusCode());
+				logger.info("==========================================");
+				return response;
+			} catch (Exception e){
+				logger.error("ERROR al inactivar parcela {}: {}", id, e.getMessage(), e);
+				ErrorResponse error = new ErrorResponse(
+						e.getMessage(),
+						LocalDateTime.now().toString(),
+						request.getRequestURI()
+				);
+				logger.error("Respuesta de error: {}", error);
+				logger.info("==========================================");
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 			}
 		}
 }
